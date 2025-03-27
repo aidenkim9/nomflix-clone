@@ -22,6 +22,26 @@ export interface IGetMovies {
   total_results: number;
 }
 
+interface IUpcommingResult {
+  backdrop_path: string;
+  id: number;
+  overview: string;
+  poster_path: string;
+  release_date: string;
+  title: string;
+}
+
+export interface IUpcommingMovies {
+  dates: {
+    maximum: number;
+    minimum: number;
+  };
+  page: number;
+  results: IUpcommingResult[];
+  total_pages: number;
+  total_results: number;
+}
+
 interface ISearchResult {
   backdrop_path: string;
   id: number;
@@ -41,6 +61,15 @@ export interface ISearchMovies {
 export async function getMovies() {
   const json = await (
     await fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`)
+  ).json();
+  return json;
+}
+
+export async function getUpcomming() {
+  const json = await (
+    await fetch(
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}`
+    )
   ).json();
   return json;
 }
