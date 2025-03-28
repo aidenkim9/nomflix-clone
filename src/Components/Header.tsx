@@ -11,6 +11,7 @@ const Nav = styled(motion.nav)`
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  z-index: 1;
   top: 0;
   padding: 20px;
 `;
@@ -93,19 +94,10 @@ function Header() {
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("tv");
   const [searchOpen, setSearchOpen] = useState(false);
-  const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
   const { scrollY } = useScroll();
   const { register, handleSubmit } = useForm<IForm>();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    inputAnimation.set({ scaleX: 0 });
-  }, []);
-
-  useEffect(() => {
-    inputAnimation.start({ scaleX: searchOpen ? 1 : 0 });
-  }, [searchOpen]);
 
   const toggleSearch = () => {
     setSearchOpen((prev) => !prev);
@@ -122,6 +114,16 @@ function Header() {
 
   const onValid = (data: IForm) => {
     navigate(`/search?keyword=${data.keyword}`);
+  };
+
+  const inputVariants = {
+    initial: { scaleX: 0 },
+    click: (searchOpen: boolean) => ({
+      scaleX: searchOpen ? 1 : 0,
+    }),
+    exit: {
+      scaleX: 0,
+    },
   };
 
   return (
@@ -157,10 +159,14 @@ function Header() {
       <Col>
         <Search onSubmit={handleSubmit(onValid)}>
           <Input
+            custom={searchOpen}
+            variants={inputVariants}
             {...register("keyword", { required: true, minLength: 2 })}
             transition={{ type: "linear" }}
-            animate={inputAnimation}
             placeholder="Search movie or Tv show..."
+            initial="initial"
+            animate="click"
+            exit="exit"
           />
           <motion.svg
             whileHover={{
