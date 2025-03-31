@@ -38,6 +38,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
   background-color: black;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: ${(props) => props.theme.white.darker}
 }
 ol, ul {

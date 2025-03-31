@@ -1,25 +1,25 @@
-import { motion, AnimatePresence } from "framer-motion";
-import styled from "styled-components";
-import { IUpcommingMovies } from "../../api";
-import { getBgPath } from "../../utils";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { getBgPath } from "../../utils";
+import { ITopRated } from "../../api";
 
 const Container = styled.div`
   position: relative;
-  top: -9%;
-`;
-
-const Row = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  height: 240px;
+  top: -7%;
 `;
 
 const Title = styled(motion.div)`
   font-size: 25px;
   padding: 10px 10px 10px 20px;
   font-weight: bold;
+`;
+
+const Row = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  height: 240px;
 `;
 
 const BoxContainer = styled(motion.div)`
@@ -30,6 +30,38 @@ const BoxContainer = styled(motion.div)`
   position: absolute;
   bottom: 0;
 `;
+
+const boxContainerVariants = {
+  initial: {
+    x: window.innerWidth,
+  },
+  animate: {
+    x: 0,
+    transition: { duration: 1 },
+  },
+  exit: {
+    x: -window.innerWidth,
+    transition: { duration: 1 },
+  },
+};
+
+const boxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.15,
+    y: -30,
+    transition: { delay: 0.4, duration: 0.3 },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: { delay: 0.4, duration: 0.3 },
+  },
+};
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   height: 175px;
@@ -71,45 +103,13 @@ const Info = styled(motion.div)`
   }
 `;
 
-interface IUpCommingProps {
-  movies?: IUpcommingMovies;
-}
-
 const offset = 6;
 
-const boxContainerVariants = {
-  initial: {
-    x: window.innerWidth,
-  },
-  animate: {
-    x: 0,
-    transition: { duration: 1 },
-  },
-  exit: {
-    x: -window.innerWidth,
-    transition: { duration: 1 },
-  },
-};
+interface ITopRatedProps {
+  movies?: ITopRated;
+}
 
-const boxVariants = {
-  normal: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.15,
-    y: -30,
-    transition: { delay: 0.4, duration: 0.3 },
-  },
-};
-
-const infoVariants = {
-  hover: {
-    opacity: 1,
-    transition: { delay: 0.4, duration: 0.3 },
-  },
-};
-
-function UpComming({ movies }: IUpCommingProps) {
+function TopRated({ movies }: ITopRatedProps) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const maxIndex = movies ? Math.floor(movies.results.length / offset) - 1 : 0;
@@ -124,12 +124,12 @@ function UpComming({ movies }: IUpCommingProps) {
     setLeaving((prev) => !prev);
   };
   const getClickedMovie = (movieId: number) => {
-    navigate(`/movies/up_comming/${movieId}`);
+    navigate(`/movies/top_rated/${movieId}`);
   };
   return (
     <Container>
       <Row>
-        <Title>Up Comming</Title>
+        <Title>Top Rated</Title>
         <AnimatePresence onExitComplete={toggleLeaving} initial={false}>
           <BoxContainer
             variants={boxContainerVariants}
@@ -143,7 +143,7 @@ function UpComming({ movies }: IUpCommingProps) {
               .slice(index * offset, index * offset + offset)
               .map((movie) => (
                 <Box
-                  layoutId={"up_comming/" + movie.id + ""}
+                  layoutId={"top_rated/" + movie.id + ""}
                   variants={boxVariants}
                   onClick={() => getClickedMovie(movie.id)}
                   initial="normal"
@@ -166,4 +166,5 @@ function UpComming({ movies }: IUpCommingProps) {
     </Container>
   );
 }
-export default UpComming;
+
+export default TopRated;

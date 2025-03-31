@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { getBgPath } from "../../utils";
-import { IGetMovies } from "../../api";
+import { INowPlaying } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -21,7 +21,7 @@ const Title = styled.h1`
 `;
 const Overview = styled.p`
   font-size: 23px;
-  width: 60%;
+  width: 45%;
 `;
 
 const Options = styled.div`
@@ -54,7 +54,7 @@ const Button = styled(motion.div)`
 `;
 
 interface IBannerProps {
-  movies?: IGetMovies;
+  movies?: INowPlaying;
 }
 
 function Banner({ movies }: IBannerProps) {

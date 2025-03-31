@@ -1,0 +1,23 @@
+import styled from "styled-components";
+
+const Container = styled.div`
+  width: 100%;
+  padding: 60px 0px;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+`;
+function Footer() {
+  return (
+    <Container>
+      <span>
+        &copy; {new Date().getFullYear()} Nomflix. All rights reserved.
+      </span>
+    </Container>
+  );
+}
+
+export default Footer;

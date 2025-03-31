@@ -107,7 +107,7 @@ function Header() {
     scrollY.on("change", () => {
       navAnimation.start({
         backgroundColor:
-          scrollY.get() > 80 ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0)",
+          scrollY.get() > 40 ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0)",
       });
     });
   }, [scrollY]);

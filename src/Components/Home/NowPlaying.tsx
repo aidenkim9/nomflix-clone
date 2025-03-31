@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getBgPath } from "../../utils";
-import { IGetMovies } from "../../api";
+import { INowPlaying } from "../../api";
 
 const Container = styled.div`
   display: flex;
@@ -112,7 +112,7 @@ const infoVariants = {
 const offset = 6;
 
 interface INowPlayingProps {
-  movies?: IGetMovies;
+  movies?: INowPlaying;
 }
 
 function NowPlaying({ movies }: INowPlayingProps) {
