@@ -1,8 +1,7 @@
 const API_KEY = "30f13121bc59f1b8f60a03f4d5c57300";
 const BASE_PATH = "https://api.themoviedb.org/3";
-const KR = "&language=ko-KR";
 
-interface INowResult {
+interface IMovieResult {
   backdrop_path: string;
   id: number;
   overview: string;
@@ -17,18 +16,9 @@ export interface INowPlaying {
     minimum: number;
   };
   page: number;
-  results: INowResult[];
+  results: IMovieResult[];
   total_pages: number;
   total_results: number;
-}
-
-interface IUpcommingResult {
-  backdrop_path: string;
-  id: number;
-  overview: string;
-  poster_path: string;
-  release_date: string;
-  title: string;
 }
 
 export interface IUpcommingMovies {
@@ -37,23 +27,14 @@ export interface IUpcommingMovies {
     minimum: number;
   };
   page: number;
-  results: IUpcommingResult[];
+  results: IMovieResult[];
   total_pages: number;
   total_results: number;
 }
 
-interface ITopRatedResult {
-  backdrop_path: string;
-  id: number;
-  overview: string;
-  poster_path: string;
-  release_date: string;
-  title: string;
-}
-
 export interface ITopRated {
   page: number;
-  results: ITopRatedResult[];
+  results: IMovieResult[];
   total_pages: number;
   total_results: number;
 }

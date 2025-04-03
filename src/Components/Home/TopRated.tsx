@@ -1,34 +1,21 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getBgPath } from "../../utils";
 import { ITopRated } from "../../api";
+import {
+  Title,
+  Row,
+  BoxContainer,
+  Box,
+  IndexBtn,
+  Info,
+} from "../Common/Styled";
 
 const Container = styled.div`
   position: relative;
   top: -7%;
-`;
-
-const Title = styled(motion.div)`
-  font-size: 25px;
-  padding: 10px 10px 10px 20px;
-  font-weight: bold;
-`;
-
-const Row = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  height: 240px;
-`;
-
-const BoxContainer = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
 `;
 
 const boxContainerVariants = {
@@ -62,46 +49,6 @@ const infoVariants = {
     transition: { delay: 0.4, duration: 0.3 },
   },
 };
-
-const Box = styled(motion.div)<{ bgphoto: string }>`
-  height: 175px;
-  background-image: url(${(props) => props.bgphoto});
-  background-size: cover;
-  background-position: center center;
-  cursor: pointer;
-  &:last-child {
-    transform-origin: center right;
-  }
-  &:first-child {
-    transform-origin: center left;
-  }
-`;
-
-const IndexBtn = styled(motion.div)`
-  cursor: pointer;
-  background-color: transparent;
-  width: 60px;
-  height: 175px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-`;
-
-const Info = styled(motion.div)`
-  background-color: ${(props) => props.theme.black.lighter};
-  opacity: 0;
-  padding: 10px;
-  position: absolute;
-  width: 100%;
-  bottom: -10%;
-  h4 {
-    text-align: center;
-  }
-`;
 
 const offset = 6;
 

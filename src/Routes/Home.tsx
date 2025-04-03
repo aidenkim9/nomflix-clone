@@ -7,23 +7,15 @@ import {
   ITopRated,
   IUpcommingMovies,
 } from "../api";
+import { Loader } from "../Components/Common/Styled";
 import styled from "styled-components";
 import Banner from "../Components/Home/Banner";
-import NowPlaying from "../Components/Home/NowPlaying";
-import UpComming from "../Components/Home/UpComming";
+import Slider from "../Components/Slider";
 import MovieDetail from "../Components/Home/MovieDetail";
-import TopRated from "../Components/Home/TopRated";
 
 const Container = styled.div`
   overflow-x: hidden;
   height: 200vh;
-`;
-
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 function Home() {
@@ -50,9 +42,30 @@ function Home() {
       ) : (
         <>
           <Banner movies={nowPlayingData} />
-          <NowPlaying movies={nowPlayingData} />
-          <UpComming movies={upCommingData} />
-          <TopRated movies={topRatedData} />
+          {nowPlayingData && (
+            <Slider
+              title={"Now Playing"}
+              movies={nowPlayingData}
+              layoutId={"now_playing"}
+              top={-12}
+            />
+          )}
+          {upCommingData && (
+            <Slider
+              title={"Up comming"}
+              movies={upCommingData}
+              layoutId={"up_comming"}
+              top={-9}
+            />
+          )}
+          {topRatedData && (
+            <Slider
+              title={"Top Rated"}
+              movies={topRatedData}
+              layoutId={"top_rated"}
+              top={-7}
+            />
+          )}
           <MovieDetail
             nowPlayingMovies={nowPlayingData}
             upCommingMovies={upCommingData}

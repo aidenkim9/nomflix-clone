@@ -1,93 +1,62 @@
-import styled from "styled-components";
 import { AnimatePresence } from "framer-motion";
+
+import { Title, Row, BoxContainer, Box, IndexBtn, Info } from "./Common/Styled";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getBgPath } from "../../utils";
-import { INowPlaying } from "../../api";
-import {
-  Title,
-  Row,
-  BoxContainer,
-  Box,
-  IndexBtn,
-  Info,
-} from "../Common/Styled";
+import { getBgPath } from ".././utils";
+import { INowPlaying, ITopRated, IUpcommingMovies } from ".././api";
+import styled from "styled-components";
+import { rowVariants, boxVariants, infoVariants } from "../Variants";
 
 const Container = styled.div`
   position: relative;
-  top: -12%;
 `;
-
-const rowVariants = {
-  initial: (back: boolean) => ({
-    x: back ? -window.innerWidth - 10 : window.innerWidth + 10,
-  }),
-  visible: { x: 0 },
-  exit: (back: boolean) => ({
-    x: back ? window.innerWidth + 10 : -window.innerWidth - 10,
-  }),
-};
-
-const boxVariants = {
-  normal: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.15,
-    y: -30,
-    transition: { delay: 0.4, duration: 0.3 },
-  },
-};
-
-const infoVariants = {
-  hover: {
-    opacity: 1,
-    transition: { delay: 0.4, duration: 0.3 },
-  },
-};
 
 const offset = 6;
 
-interface INowPlayingProps {
-  movies?: INowPlaying;
+interface ISliderProps {
+  title: string;
+  movies: INowPlaying | IUpcommingMovies | ITopRated; //INowPlaying INowPlaying[] 차이?
+  layoutId: string;
+  top: number;
 }
 
-function NowPlaying({ movies }: INowPlayingProps) {
-  const [nowPlayingIndex, setNowPlayingIndex] = useState(0);
+function Slider({ title, movies, layoutId, top }: ISliderProps) {
+  const [sliderIndex, setSliderIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
-  const increaseIndex = () => {
+
+  const toggleLeaving = () => {
+    setLeaving((prev) => !prev);
+  };
+  const onBoxClicked = (movieId: number) => {
+    navigate(`/movies/${layoutId}/${movieId}`);
+  };
+  const indexUp = () => {
     if (movies) {
       if (leaving) return;
       toggleLeaving();
       setBack(false);
       const totalMovies = movies.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setNowPlayingIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+      setSliderIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
-  const decreaseIndex = () => {
+  const indexDown = () => {
     if (movies) {
       if (leaving) return;
       toggleLeaving();
       setBack(true);
       const totalMovies = movies.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setNowPlayingIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+      setSliderIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
   };
-  const toggleLeaving = () => {
-    setLeaving((prev) => !prev);
-  };
-  const onBoxClicked = (movieId: number) => {
-    navigate(`/movies/now_playing/${movieId}`);
-  };
-
   return (
-    <Container>
+    <Container style={{ top: `${top}%` }}>
       <Row>
-        <Title>Now Playing</Title>
+        <Title>{title}</Title>
         <AnimatePresence onExitComplete={toggleLeaving} initial={false}>
           <BoxContainer
             variants={rowVariants}
@@ -95,18 +64,15 @@ function NowPlaying({ movies }: INowPlayingProps) {
             animate="visible"
             exit="exit"
             transition={{ type: "linear", duration: 1 }}
-            key={nowPlayingIndex}
+            key={sliderIndex}
             custom={back}
           >
             {movies?.results
               .slice(1)
-              .slice(
-                offset * nowPlayingIndex,
-                offset * nowPlayingIndex + offset
-              )
+              .slice(offset * sliderIndex, offset * sliderIndex + offset)
               .map((movie) => (
                 <Box
-                  layoutId={"now_playing/" + movie.id + ""}
+                  layoutId={`${layoutId}/` + movie.id + ""}
                   onClick={() => onBoxClicked(movie.id)}
                   variants={boxVariants}
                   whileHover="hover"
@@ -123,10 +89,10 @@ function NowPlaying({ movies }: INowPlayingProps) {
           </BoxContainer>
         </AnimatePresence>
 
-        <IndexBtn onClick={decreaseIndex} whileHover={{ opacity: 1 }}>
+        <IndexBtn onClick={indexDown} whileHover={{ opacity: 1 }}>
           ⬅︎
         </IndexBtn>
-        <IndexBtn onClick={increaseIndex} whileHover={{ opacity: 1 }}>
+        <IndexBtn onClick={indexUp} whileHover={{ opacity: 1 }}>
           ➡︎
         </IndexBtn>
       </Row>
@@ -134,4 +100,4 @@ function NowPlaying({ movies }: INowPlayingProps) {
   );
 }
 
-export default NowPlaying;
+export default Slider;

@@ -8,6 +8,7 @@ import {
   ITopRated,
   IUpcommingMovies,
 } from "../../api";
+import { Loader } from "../Common/Styled";
 import { getBgPath } from "../../utils";
 import { useQuery } from "@tanstack/react-query";
 
@@ -144,67 +145,75 @@ function MovieDetail({
   return (
     <>
       <AnimatePresence>
-        {bannerMatch || nowPlayingMatch || upCommingMatch || topRatedMatch ? (
-          <>
-            <Overlay
-              onClick={goBackHome}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-            <BigMovie
-              layoutId={
-                bannerMatch
-                  ? "banner/" + bannerMatch.params.movieId
-                  : nowPlayingMatch
-                  ? "now_playing/" + nowPlayingMatch.params.movieId
-                  : upCommingMatch
-                  ? "up_comming/" + upCommingMatch.params.movieId
-                  : topRatedMatch
-                  ? "top_rated/" + topRatedMatch.params.movieId
-                  : ""
-              }
-            >
-              {clickedMovie && movieDetailData && (
-                <>
-                  <BigCover
-                    style={{
-                      backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), transparent), url(${getBgPath(
-                        clickedMovie.backdrop_path || clickedMovie.poster_path
-                      )})`,
-                    }}
-                  />
-                  <BigTitle>{clickedMovie.title}</BigTitle>
-                  <BigPoster bgphoto={getBgPath(movieDetailData.poster_path)} />
-                  <BigInfo>
-                    <BigHeader>
-                      <span>{movieDetailData.release_date.slice(0, 4)}</span>
-                      <span>{movieDetailData.runtime}m</span>
-                      <BigGenres>
-                        {movieDetailData.genres
-                          .slice(0, 2)
-                          .map((genre, index) => (
-                            <li key={index}>{genre.name}</li>
-                          ))}
-                      </BigGenres>
-                      <span>{movieDetailData.vote_average}</span>
-                    </BigHeader>
-                    <BigOverview>
-                      <BigTagline>
-                        {movieDetailData.tagline
-                          ? "【 " + movieDetailData.tagline + " 】"
-                          : null}
-                      </BigTagline>
-                      {clickedMovie.overview}
-                    </BigOverview>
-                  </BigInfo>
-                </>
-              )}
-            </BigMovie>
-          </>
-        ) : null}
+        {movieDetailIsLoading ? (
+          <Loader>Loading...</Loader>
+        ) : (
+          clickedMovie && (
+            <>
+              <Overlay
+                onClick={goBackHome}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              />
+              <BigMovie
+                layoutId={
+                  bannerMatch
+                    ? "banner/" + bannerMatch.params.movieId
+                    : nowPlayingMatch
+                    ? "now_playing/" + nowPlayingMatch.params.movieId
+                    : upCommingMatch
+                    ? "up_comming/" + upCommingMatch.params.movieId
+                    : topRatedMatch
+                    ? "top_rated/" + topRatedMatch.params.movieId
+                    : ""
+                }
+              >
+                {clickedMovie && movieDetailData && (
+                  <>
+                    <BigCover
+                      style={{
+                        backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), transparent), url(${getBgPath(
+                          clickedMovie.backdrop_path || clickedMovie.poster_path
+                        )})`,
+                      }}
+                    />
+                    <BigTitle>{clickedMovie.title}</BigTitle>
+                    <BigPoster
+                      bgphoto={getBgPath(movieDetailData.poster_path)}
+                    />
+                    <BigInfo>
+                      <BigHeader>
+                        <span>{movieDetailData.release_date.slice(0, 4)}</span>
+                        <span>{movieDetailData.runtime}m</span>
+                        <BigGenres>
+                          {movieDetailData.genres
+                            .slice(0, 2)
+                            .map((genre, index) => (
+                              <li key={index}>{genre.name}</li>
+                            ))}
+                        </BigGenres>
+                        <span>{movieDetailData.vote_average}</span>
+                      </BigHeader>
+                      <BigOverview>
+                        <BigTagline>
+                          {movieDetailData.tagline
+                            ? "【 " + movieDetailData.tagline + " 】"
+                            : null}
+                        </BigTagline>
+                        {clickedMovie.overview}
+                      </BigOverview>
+                    </BigInfo>
+                  </>
+                )}
+              </BigMovie>
+            </>
+          )
+        )}
       </AnimatePresence>
     </>
   );
 }
 
 export default MovieDetail;
+
+/*typescript*/
