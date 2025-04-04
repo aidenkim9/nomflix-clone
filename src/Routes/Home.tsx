@@ -1,21 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  getMovies,
-  getTopRated,
-  getUpcomming,
-  INowPlaying,
-  ITopRated,
-  IUpcommingMovies,
-} from "../api";
+import { INowPlaying, ITopRated, IUpcommingMovies } from "../Api/types";
+import { getMovies, getTopRated, getUpcomming } from "../Api/api";
 import { Loader } from "../Components/Common/Styled";
 import styled from "styled-components";
 import Banner from "../Components/Home/Banner";
-import Slider from "../Components/Slider";
+import Slider from "../Components/Home/Slider";
 import MovieDetail from "../Components/Home/MovieDetail";
 
 const Container = styled.div`
   overflow-x: hidden;
   height: 200vh;
+`;
+
+const Sliders = styled.div`
+  position: relative;
+  top: -10%;
 `;
 
 function Home() {
@@ -42,30 +41,29 @@ function Home() {
       ) : (
         <>
           <Banner movies={nowPlayingData} />
-          {nowPlayingData && (
-            <Slider
-              title={"Now Playing"}
-              movies={nowPlayingData}
-              layoutId={"now_playing"}
-              top={-12}
-            />
-          )}
-          {upCommingData && (
-            <Slider
-              title={"Up comming"}
-              movies={upCommingData}
-              layoutId={"up_comming"}
-              top={-9}
-            />
-          )}
-          {topRatedData && (
-            <Slider
-              title={"Top Rated"}
-              movies={topRatedData}
-              layoutId={"top_rated"}
-              top={-7}
-            />
-          )}
+          <Sliders>
+            {nowPlayingData && (
+              <Slider
+                title={"Now Playing"}
+                movies={{ results: nowPlayingData.results }}
+                layoutId={"now_playing"}
+              />
+            )}
+            {upCommingData && (
+              <Slider
+                title={"Up comming"}
+                movies={{ results: upCommingData.results }}
+                layoutId={"up_comming"}
+              />
+            )}
+            {topRatedData && (
+              <Slider
+                title={"Top Rated"}
+                movies={{ results: topRatedData.results }}
+                layoutId={"top_rated"}
+              />
+            )}
+          </Sliders>
           <MovieDetail
             nowPlayingMovies={nowPlayingData}
             upCommingMovies={upCommingData}

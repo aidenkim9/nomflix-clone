@@ -2,13 +2,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
-  getMovieDetail,
   IMovieDetail,
   INowPlaying,
   ITopRated,
   IUpcommingMovies,
-} from "../../api";
-import { Loader } from "../Common/Styled";
+} from "../../Api/types";
+import { getMovieDetail } from "../../Api/api";
 import { getBgPath } from "../../utils";
 import { useQuery } from "@tanstack/react-query";
 
@@ -115,7 +114,7 @@ function MovieDetail({
   const nowPlayingMatch = useMatch("movies/now_playing/:movieId");
   const upCommingMatch = useMatch("movies/up_comming/:movieId");
   const topRatedMatch = useMatch("movies/top_rated/:movieId");
-  console.log(bannerMatch, nowPlayingMatch, upCommingMatch);
+
   const clickedMovie =
     (bannerMatch?.params.movieId &&
       nowPlayingMovies?.results.find(
@@ -145,70 +144,67 @@ function MovieDetail({
   return (
     <>
       <AnimatePresence>
-        {movieDetailIsLoading ? (
-          <Loader>Loading...</Loader>
-        ) : (
-          clickedMovie && (
-            <>
-              <Overlay
-                onClick={goBackHome}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              />
-              <BigMovie
-                layoutId={
-                  bannerMatch
-                    ? "banner/" + bannerMatch.params.movieId
-                    : nowPlayingMatch
-                    ? "now_playing/" + nowPlayingMatch.params.movieId
-                    : upCommingMatch
-                    ? "up_comming/" + upCommingMatch.params.movieId
-                    : topRatedMatch
-                    ? "top_rated/" + topRatedMatch.params.movieId
-                    : ""
-                }
-              >
-                {clickedMovie && movieDetailData && (
-                  <>
-                    <BigCover
-                      style={{
-                        backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), transparent), url(${getBgPath(
-                          clickedMovie.backdrop_path || clickedMovie.poster_path
-                        )})`,
-                      }}
-                    />
-                    <BigTitle>{clickedMovie.title}</BigTitle>
-                    <BigPoster
-                      bgphoto={getBgPath(movieDetailData.poster_path)}
-                    />
-                    <BigInfo>
-                      <BigHeader>
-                        <span>{movieDetailData.release_date.slice(0, 4)}</span>
-                        <span>{movieDetailData.runtime}m</span>
-                        <BigGenres>
-                          {movieDetailData.genres
-                            .slice(0, 2)
-                            .map((genre, index) => (
-                              <li key={index}>{genre.name}</li>
-                            ))}
-                        </BigGenres>
-                        <span>{movieDetailData.vote_average}</span>
-                      </BigHeader>
-                      <BigOverview>
-                        <BigTagline>
-                          {movieDetailData.tagline
-                            ? "【 " + movieDetailData.tagline + " 】"
-                            : null}
-                        </BigTagline>
-                        {clickedMovie.overview}
-                      </BigOverview>
-                    </BigInfo>
-                  </>
-                )}
-              </BigMovie>
-            </>
-          )
-        )}
+        {bannerMatch?.params.movieId ||
+        nowPlayingMatch?.params.movieId ||
+        upCommingMatch?.params.movieId ||
+        topRatedMatch?.params.movieId ? (
+          <>
+            <Overlay
+              onClick={goBackHome}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+            <BigMovie
+              layoutId={
+                bannerMatch
+                  ? "banner/" + bannerMatch.params.movieId
+                  : nowPlayingMatch
+                  ? "now_playing/" + nowPlayingMatch.params.movieId
+                  : upCommingMatch
+                  ? "up_comming/" + upCommingMatch.params.movieId
+                  : topRatedMatch
+                  ? "top_rated/" + topRatedMatch.params.movieId
+                  : ""
+              }
+            >
+              {clickedMovie && movieDetailData && (
+                <>
+                  <BigCover
+                    style={{
+                      backgroundImage: `linear-gradient(to top, rgba(0,0,0,1), transparent), url(${getBgPath(
+                        clickedMovie.backdrop_path || clickedMovie.poster_path
+                      )})`,
+                    }}
+                  />
+                  <BigTitle>{clickedMovie.title}</BigTitle>
+                  <BigPoster bgphoto={getBgPath(movieDetailData.poster_path)} />
+                  <BigInfo>
+                    <BigHeader>
+                      <span>{movieDetailData.release_date.slice(0, 4)}</span>
+                      <span>{movieDetailData.runtime}m</span>
+                      <BigGenres>
+                        {movieDetailData.genres
+                          .slice(0, 2)
+                          .map((genre, index) => (
+                            <li key={index}>{genre.name}</li>
+                          ))}
+                      </BigGenres>
+                      <span>{movieDetailData.vote_average}</span>
+                    </BigHeader>
+                    <BigOverview>
+                      <BigTagline>
+                        {movieDetailData.tagline
+                          ? "【 " + movieDetailData.tagline + " 】"
+                          : null}
+                      </BigTagline>
+                      {clickedMovie.overview}
+                    </BigOverview>
+                  </BigInfo>
+                </>
+              )}
+            </BigMovie>
+          </>
+        ) : null}
       </AnimatePresence>
     </>
   );
@@ -216,4 +212,8 @@ function MovieDetail({
 
 export default MovieDetail;
 
-/*typescript*/
+/*typescript
+layoutId animation 렌더링 순서 문제 clickedMovie에서???
+언제 state를 rendering 다시 하는게 좋은지?
+rendering이 많을수록 최적화가 안되니 효율적인 방법은?
+*/

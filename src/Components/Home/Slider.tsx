@@ -1,41 +1,38 @@
 import { AnimatePresence } from "framer-motion";
 
-import { Title, Row, BoxContainer, Box, IndexBtn, Info } from "./Common/Styled";
-import { useState } from "react";
+import { Title, Row, BoxContainer, IndexBtn } from "../Common/Styled";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getBgPath } from ".././utils";
-import { INowPlaying, ITopRated, IUpcommingMovies } from ".././api";
+import { IGetMovies } from "../../Api/types";
 import styled from "styled-components";
-import { rowVariants, boxVariants, infoVariants } from "../Variants";
+import { rowVariants } from "../../motionVariants";
+import BoxItem from "./BoxItem";
 
 const Container = styled.div`
   position: relative;
+  margin-bottom: 5%;
 `;
 
 const offset = 6;
 
 interface ISliderProps {
   title: string;
-  movies: INowPlaying | IUpcommingMovies | ITopRated; //INowPlaying INowPlaying[] 차이?
+  movies: IGetMovies;
   layoutId: string;
-  top: number;
 }
 
-function Slider({ title, movies, layoutId, top }: ISliderProps) {
+function Slider({ title, movies, layoutId }: ISliderProps) {
   const [sliderIndex, setSliderIndex] = useState(0);
-  const [leaving, setLeaving] = useState(false);
+  const leaving = useRef(false);
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
-
+  console.log(movies);
   const toggleLeaving = () => {
-    setLeaving((prev) => !prev);
-  };
-  const onBoxClicked = (movieId: number) => {
-    navigate(`/movies/${layoutId}/${movieId}`);
+    leaving.current = !leaving.current;
   };
   const indexUp = () => {
     if (movies) {
-      if (leaving) return;
+      if (leaving.current) return;
       toggleLeaving();
       setBack(false);
       const totalMovies = movies.results.length - 1;
@@ -45,7 +42,7 @@ function Slider({ title, movies, layoutId, top }: ISliderProps) {
   };
   const indexDown = () => {
     if (movies) {
-      if (leaving) return;
+      if (leaving.current) return;
       toggleLeaving();
       setBack(true);
       const totalMovies = movies.results.length - 1;
@@ -53,8 +50,16 @@ function Slider({ title, movies, layoutId, top }: ISliderProps) {
       setSliderIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
   };
+
+  const onBoxClicked = useCallback(
+    (movieId: number) => {
+      navigate(`/movies/${layoutId}/${movieId}`);
+    },
+    [indexUp]
+  );
+
   return (
-    <Container style={{ top: `${top}%` }}>
+    <Container>
       <Row>
         <Title>{title}</Title>
         <AnimatePresence onExitComplete={toggleLeaving} initial={false}>
@@ -68,23 +73,20 @@ function Slider({ title, movies, layoutId, top }: ISliderProps) {
             custom={back}
           >
             {movies?.results
-              .slice(1)
-              .slice(offset * sliderIndex, offset * sliderIndex + offset)
+              .slice(
+                1 + offset * sliderIndex,
+                1 + offset * sliderIndex + offset
+              )
               .map((movie) => (
-                <Box
-                  layoutId={`${layoutId}/` + movie.id + ""}
-                  onClick={() => onBoxClicked(movie.id)}
-                  variants={boxVariants}
-                  whileHover="hover"
-                  initial="normal"
+                <BoxItem
                   key={movie.id}
-                  transition={{ type: "linear" }}
-                  bgphoto={getBgPath(movie.backdrop_path || movie.poster_path)}
-                >
-                  <Info variants={infoVariants}>
-                    <h4>{movie.title}</h4>
-                  </Info>
-                </Box>
+                  title={movie.title}
+                  backdrop={movie.backdrop_path}
+                  poster={movie.poster_path}
+                  layoutId={layoutId}
+                  movieId={movie.id}
+                  onBoxClicked={onBoxClicked}
+                />
               ))}
           </BoxContainer>
         </AnimatePresence>

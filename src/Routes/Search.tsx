@@ -18,12 +18,8 @@ import {
   BigTagline,
   BigOverview,
 } from "../Components/Common/SearchStyled";
-import {
-  getMovieDetail,
-  getSearchMovies,
-  IMovieDetail,
-  ISearchMovies,
-} from "../api";
+import { IMovieDetail, ISearchMovies } from "../Api/types";
+import { getMovieDetail, getSearchMovies } from "../Api/api";
 import { getBgPath } from "../utils";
 import { AnimatePresence } from "framer-motion";
 

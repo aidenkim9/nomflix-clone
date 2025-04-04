@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { getBgPath } from "../../utils";
-import { INowPlaying } from "../../api";
+import { INowPlaying } from "../../Api/types";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 

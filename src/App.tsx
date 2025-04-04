@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Routes/Home";
 import Tv from "./Routes/Tv";
 import Search from "./Routes/Search";
-import Header from "./Components/Header";
+import Header from "./Components/Common/Header";
 import { Helmet } from "react-helmet";
-import Footer from "./Components/Footer";
+import Footer from "./Components/Common/Footer";
 
 function App() {
   return (
