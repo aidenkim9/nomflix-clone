@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { INowPlaying, ITopRated, IUpcommingMovies } from "../Api/types";
 import { getMovies, getTopRated, getUpcomming } from "../Api/api";
-import { Loader } from "../Components/Common/Styled";
+import { Loader } from "../Components/Common/SliderStyled";
 import styled from "styled-components";
 import Banner from "../Components/Home/Banner";
 import Slider from "../Components/Home/Slider";
@@ -10,6 +10,7 @@ import MovieDetail from "../Components/Home/MovieDetail";
 const Container = styled.div`
   overflow-x: hidden;
   height: 200vh;
+  scroll-behavior: smooth;
 `;
 
 const Sliders = styled.div`

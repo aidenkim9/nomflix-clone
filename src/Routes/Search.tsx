@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Loader } from "../Components/Common/Styled";
+import { Loader } from "../Components/Common/SliderStyled";
 import {
   SearchTitle,
   Movies,
@@ -22,32 +22,12 @@ import { IMovieDetail, ISearchMovies } from "../Api/types";
 import { getMovieDetail, getSearchMovies } from "../Api/api";
 import { getBgPath } from "../utils";
 import { AnimatePresence } from "framer-motion";
+import { movieVariants, bigMovieVariants } from "../motionVariants";
 
 const Container = styled.div`
   height: 100vh;
   margin-top: 10%;
 `;
-
-const movieVariants = {
-  normal: { scale: 1 },
-  hover: {
-    scale: 1.02,
-    y: -5,
-    transition: { duration: 0.3, delay: 0.3 },
-  },
-};
-
-const bigMovieVariants = {
-  initial: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-  },
-  exit: {
-    opacity: 0,
-  },
-};
 
 function Search() {
   const location = useLocation();

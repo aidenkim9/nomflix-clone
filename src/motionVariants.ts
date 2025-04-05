@@ -23,3 +23,24 @@ export const infoVariants = {
     transition: { delay: 0.4, duration: 0.3 },
   },
 };
+
+export const movieVariants = {
+  normal: { scale: 1 },
+  hover: {
+    scale: 1.02,
+    y: -5,
+    transition: { duration: 0.3, delay: 0.3 },
+  },
+};
+
+export const bigMovieVariants = {
+  initial: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+  },
+  exit: {
+    opacity: 0,
+  },
+};

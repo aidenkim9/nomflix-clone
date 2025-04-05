@@ -20,9 +20,9 @@ export const Row = styled(motion.div)`
   height: 240px;
 `;
 
-export const BoxContainer = styled(motion.div)`
+export const BoxContainer = styled(motion.div)<{ columns: number }>`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(${(props) => props.columns}, 1fr);
   gap: 5px;
   width: 100%;
   position: absolute;

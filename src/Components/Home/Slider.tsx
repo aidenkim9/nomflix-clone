@@ -1,19 +1,18 @@
 import { AnimatePresence } from "framer-motion";
 
-import { Title, Row, BoxContainer, IndexBtn } from "../Common/Styled";
+import { Title, Row, BoxContainer, IndexBtn } from "../Common/SliderStyled";
 import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IGetMovies } from "../../Api/types";
 import styled from "styled-components";
 import { rowVariants } from "../../motionVariants";
 import BoxItem from "./BoxItem";
+import { useWindowSize } from "../../Hooks/useWindowSize";
 
 const Container = styled.div`
   position: relative;
   margin-bottom: 5%;
 `;
-
-const offset = 6;
 
 interface ISliderProps {
   title: string;
@@ -22,40 +21,49 @@ interface ISliderProps {
 }
 
 function Slider({ title, movies, layoutId }: ISliderProps) {
+  const { width } = useWindowSize();
+  const offset =
+    width >= 1440
+      ? 6
+      : width >= 1024
+      ? 5
+      : width >= 768
+      ? 4
+      : width >= 600
+      ? 3
+      : width >= 480
+      ? 2
+      : 1;
   const [sliderIndex, setSliderIndex] = useState(0);
   const leaving = useRef(false);
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
-  console.log(movies);
+
   const toggleLeaving = () => {
     leaving.current = !leaving.current;
   };
   const indexUp = () => {
-    if (movies) {
-      if (leaving.current) return;
-      toggleLeaving();
-      setBack(false);
-      const totalMovies = movies.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setSliderIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
-    }
+    if (leaving.current) return;
+    toggleLeaving();
+    setBack(false);
+    const totalMovies = movies.results.length - 1;
+    const maxIndex = Math.floor(totalMovies / offset) - 1;
+    setSliderIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
   };
   const indexDown = () => {
-    if (movies) {
-      if (leaving.current) return;
-      toggleLeaving();
-      setBack(true);
-      const totalMovies = movies.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setSliderIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
-    }
+    if (leaving.current) return;
+    toggleLeaving();
+    setBack(true);
+    const totalMovies = movies.results.length - 1;
+    const maxIndex = Math.floor(totalMovies / offset) - 1;
+    setSliderIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
   };
 
   const onBoxClicked = useCallback(
     (movieId: number) => {
       navigate(`/movies/${layoutId}/${movieId}`);
     },
-    [indexUp]
+    [navigate, layoutId]
   );
 
   return (
@@ -71,6 +79,7 @@ function Slider({ title, movies, layoutId }: ISliderProps) {
             transition={{ type: "linear", duration: 1 }}
             key={sliderIndex}
             custom={back}
+            columns={offset}
           >
             {movies?.results
               .slice(

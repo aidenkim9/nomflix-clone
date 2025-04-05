@@ -1,6 +1,5 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useMatch, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import {
   IMovieDetail,
   INowPlaying,
@@ -10,93 +9,20 @@ import {
 import { getMovieDetail } from "../../Api/api";
 import { getBgPath } from "../../utils";
 import { useQuery } from "@tanstack/react-query";
-
-const Overlay = styled(motion.div)`
-  top: 0;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-`;
-
-const BigMovie = styled(motion.div)`
-  border-radius: 15px;
-  width: 45vw;
-  height: 80vh;
-  position: fixed;
-  overflow: scroll;
-  z-index: 99;
-  top: 100px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  background-color: ${(props) => props.theme.black.lighter};
-`;
-
-const BigCover = styled.div`
-  width: 100%;
-  height: 55%;
-  background-size: cover;
-  background-position: center center;
-`;
-
-const BigTitle = styled.h1`
-  font-size: 30px;
-  position: absolute;
-  top: 45%;
-  left: 40%;
-  width: 55%;
-  font-weight: bold;
-`;
-
-const BigOverview = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 50%;
-`;
-
-const BigTagline = styled.span`
-  font-style: italic;
-  opacity: 0.9;
-`;
-
-const BigPoster = styled.div<{ bgphoto: string }>`
-  background-image: url(${(props) => props.bgphoto});
-  background-size: cover;
-  background-position: center center;
-  width: 30%;
-  height: 50%;
-  position: absolute;
-  top: 35%;
-  left: 5%;
-`;
-
-const BigInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 60%;
-  left: 40%;
-  width: 100%;
-`;
-
-const BigHeader = styled.div`
-  display: flex;
-  margin-bottom: 2%;
-  span,
-  ul {
-    margin-right: 2%;
-  }
-`;
-
-const BigGenres = styled.ul`
-  display: flex;
-  li {
-    margin-right: 3%;
-  }
-`;
+import {
+  Overlay,
+  BigMovie,
+  BigCover,
+  BigPoster,
+  BigHeader,
+  BigTitle,
+  BigGenres,
+  BigInfo,
+  BigOverview,
+  BigTagline,
+  BigX,
+} from "../Common/MovieDetailStyled";
+import { useEffect } from "react";
 
 interface IMovieDetailProps {
   nowPlayingMovies?: INowPlaying;
@@ -141,6 +67,15 @@ function MovieDetail({
     navigate("/");
   };
 
+  useEffect(() => {
+    if (clickedMovie) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto"; // 항상 안전하게 복원
+    };
+  }, [clickedMovie]);
+
   return (
     <>
       <AnimatePresence>
@@ -167,6 +102,7 @@ function MovieDetail({
                   : ""
               }
             >
+              <BigX onClick={goBackHome}>X</BigX>
               {clickedMovie && movieDetailData && (
                 <>
                   <BigCover

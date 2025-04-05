@@ -1,4 +1,4 @@
-import { Box, Info } from "../Common/Styled";
+import { Box, Info } from "../Common/SliderStyled";
 import { boxVariants, infoVariants } from "../../motionVariants";
 import { getBgPath } from "../../utils";
 import { memo } from "react";
@@ -20,7 +20,6 @@ function BoxItem({
   poster,
   onBoxClicked,
 }: IBoxProps) {
-  console.log("BoxItem: ", title);
   return (
     <>
       <Box

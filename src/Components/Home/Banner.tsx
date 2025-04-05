@@ -9,34 +9,46 @@ const Container = styled.div<{ bgphoto: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px;
+  padding: 2vw;
+  background-position: center center;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${(props) => props.bgphoto});
   background-size: cover;
+
+  @media screen and (max-width: 768px) {
+    padding: 3vw;
+  }
 `;
 const Title = styled.h1`
-  font-size: 70px;
-  margin-bottom: 20px;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
   font-weight: bold;
+  @media screen and (max-width: 768px) {
+    font-size: 3.5rem;
+  }
 `;
 const Overview = styled.p`
-  font-size: 23px;
+  font-size: 1.3rem;
   width: 45%;
+  @media screen and (max-width: 768px) {
+    font-size: 1.1rem;
+    width: 60%;
+  }
 `;
 
 const Options = styled.div`
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 1rem;
+  margin-top: 1.5rem;
 `;
 
 const Button = styled(motion.div)`
-  height: 45px;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  font-size: 18px;
+  border-radius: 0.8rem;
+  font-size: 1.1rem;
   cursor: pointer;
   &:first-child {
     width: 115px;
@@ -50,6 +62,10 @@ const Button = styled(motion.div)`
   }
   &:hover {
     opacity: 0.8;
+  }
+  @media screen and (max-width: 768px) {
+    height: 2.5rem;
+    font-size: 0.9rem;
   }
 `;
 
