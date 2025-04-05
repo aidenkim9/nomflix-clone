@@ -1,50 +1,27 @@
-export interface IMovieResult {
-  backdrop_path: string;
+export interface IMediaResult {
   id: number;
+  backdrop_path: string;
   overview: string;
   poster_path: string;
-  release_date: string;
-  title: string;
+  release_date?: string;
+  title?: string;
+  first_air_date?: string;
+  name?: string;
 }
 
-export interface IGetMovies {
-  results: IMovieResult[];
-}
-
-export interface INowPlaying {
-  dates: {
+export interface IMediaItems {
+  dates?: {
     maximum: number;
     minimum: number;
   };
   page: number;
-  results: IMovieResult[];
+  results: IMediaResult[];
   total_pages: number;
   total_results: number;
 }
 
-export interface IUpcommingMovies {
-  dates: {
-    maximum: number;
-    minimum: number;
-  };
-  page: number;
-  results: IMovieResult[];
-  total_pages: number;
-  total_results: number;
-}
-
-export interface ITopRated {
-  page: number;
-  results: IMovieResult[];
-  total_pages: number;
-  total_results: number;
-}
-
-export interface ISearchMovies {
-  page: number;
-  results: IMovieResult[];
-  total_pages: number;
-  total_results: number;
+export interface IGetMedia {
+  results: IMediaResult[];
 }
 
 interface IGenres {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { getBgPath } from "../../utils";
-import { INowPlaying } from "../../Api/types";
+import { IMediaItems } from "../../Api/types";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -23,6 +23,7 @@ const Title = styled.h1`
   font-size: 4rem;
   margin-bottom: 1.5rem;
   font-weight: bold;
+  width: 50%;
   @media screen and (max-width: 768px) {
     font-size: 3.5rem;
   }
@@ -70,23 +71,24 @@ const Button = styled(motion.div)`
 `;
 
 interface IBannerProps {
-  movies?: INowPlaying;
+  mediatype: string;
+  mediaItem: IMediaItems;
 }
 
-function Banner({ movies }: IBannerProps) {
+function Banner({ mediatype, mediaItem }: IBannerProps) {
   const navigate = useNavigate();
   const showDetail = (movieId: number) => {
-    navigate(`/movies/banner/${movieId}`);
+    navigate(`/${mediatype}/banner/${movieId}`);
   };
   return (
-    <Container bgphoto={getBgPath(movies?.results[0].backdrop_path || "")}>
-      <Title>{movies?.results[0].title}</Title>
-      <Overview>{movies?.results[0].overview}</Overview>
+    <Container bgphoto={getBgPath(mediaItem.results[0].backdrop_path || "")}>
+      <Title>{mediaItem.results[0].title || mediaItem.results[0].name}</Title>
+      <Overview>{mediaItem?.results[0].overview}</Overview>
       <Options>
         <Button>Play</Button>
         <Button
-          layoutId={`banner/${movies?.results[0].id}`}
-          onClick={() => showDetail(movies?.results[0].id || 0)}
+          layoutId={`banner/${mediaItem.results[0].id}`}
+          onClick={() => showDetail(mediaItem.results[0].id || 0)}
         >
           <span>Detail</span>
         </Button>

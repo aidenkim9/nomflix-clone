@@ -1,11 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { useMatch, useNavigate } from "react-router-dom";
-import {
-  IMovieDetail,
-  INowPlaying,
-  ITopRated,
-  IUpcommingMovies,
-} from "../../Api/types";
+import { IMediaItems, IMovieDetail } from "../../Api/types";
 import { getMovieDetail } from "../../Api/api";
 import { getBgPath } from "../../utils";
 import { useQuery } from "@tanstack/react-query";
@@ -25,9 +20,9 @@ import {
 import { useEffect } from "react";
 
 interface IMovieDetailProps {
-  nowPlayingMovies?: INowPlaying;
-  upCommingMovies?: IUpcommingMovies;
-  topRatedMovies?: ITopRated;
+  nowPlayingMovies?: IMediaItems;
+  upCommingMovies?: IMediaItems;
+  topRatedMovies?: IMediaItems;
 }
 
 function MovieDetail({
@@ -67,14 +62,14 @@ function MovieDetail({
     navigate("/");
   };
 
-  useEffect(() => {
-    if (clickedMovie) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "auto"; // 항상 안전하게 복원
-    };
-  }, [clickedMovie]);
+  // useEffect(() => {
+  //   if (clickedMovie) {
+  //     document.body.style.overflow = "hidden";
+  //   }
+  //   return () => {
+  //     document.body.style.overflow = "auto";
+  //   };
+  // }, [clickedMovie]);
 
   return (
     <>

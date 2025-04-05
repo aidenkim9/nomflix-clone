@@ -18,7 +18,7 @@ import {
   BigTagline,
   BigOverview,
 } from "../Components/Common/SearchStyled";
-import { IMovieDetail, ISearchMovies } from "../Api/types";
+import { IMediaItems, IMovieDetail } from "../Api/types";
 import { getMovieDetail, getSearchMovies } from "../Api/api";
 import { getBgPath } from "../utils";
 import { AnimatePresence } from "framer-motion";
@@ -34,11 +34,13 @@ function Search() {
   const navigate = useNavigate();
   const movieMatch = useMatch("/search/:movieId");
   const keyword = new URLSearchParams(location.search).get("keyword");
+
   const { data: searchData, isLoading: searchIsLoading } =
-    useQuery<ISearchMovies>({
+    useQuery<IMediaItems>({
       queryKey: ["search", keyword],
       queryFn: () => getSearchMovies(keyword + ""),
     });
+
   const clickedMovie = searchData?.results.find(
     (movie) => movie.id === Number(movieMatch?.params.movieId)
   );

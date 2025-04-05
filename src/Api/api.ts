@@ -28,10 +28,30 @@ export async function getMovieDetail(movieId: string) {
   ).json();
   return json;
 }
-
 export async function getSearchMovies(keyword: string) {
   const json = await (
     await fetch(`${BASE_PATH}/search/movie?query=${keyword}&api_key=${API_KEY}`)
+  ).json();
+  return json;
+}
+
+export async function getOnAirTv() {
+  const json = await (
+    await fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}`)
+  ).json();
+  return json;
+}
+
+export async function getAringToDayTv() {
+  const json = await (
+    await fetch(`${BASE_PATH}/tv/airing_today?api_key=${API_KEY}`)
+  ).json();
+  return json;
+}
+
+export async function getTopRatedTv() {
+  const json = await (
+    await fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}`)
   ).json();
   return json;
 }

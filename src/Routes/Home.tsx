@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { INowPlaying, ITopRated, IUpcommingMovies } from "../Api/types";
+import { IMediaItems } from "../Api/types";
 import { getMovies, getTopRated, getUpcomming } from "../Api/api";
 import { Loader } from "../Components/Common/SliderStyled";
 import styled from "styled-components";
@@ -20,17 +20,17 @@ const Sliders = styled.div`
 
 function Home() {
   const { data: nowPlayingData, isLoading: nowPlayingDataLoading } =
-    useQuery<INowPlaying>({
+    useQuery<IMediaItems>({
       queryKey: ["movies", "nowPlaying"],
       queryFn: getMovies,
     });
   const { data: upCommingData, isLoading: upcommingDataLoading } =
-    useQuery<IUpcommingMovies>({
+    useQuery<IMediaItems>({
       queryKey: ["movies", "upcomming"],
       queryFn: getUpcomming,
     });
   const { data: topRatedData, isLoading: topRatedLoading } =
-    useQuery<ITopRated>({
+    useQuery<IMediaItems>({
       queryKey: ["movies", "topRated"],
       queryFn: getTopRated,
     });
@@ -40,37 +40,42 @@ function Home() {
       {nowPlayingDataLoading || upcommingDataLoading || topRatedLoading ? (
         <Loader>Loading...</Loader>
       ) : (
-        <>
-          <Banner movies={nowPlayingData} />
-          <Sliders>
-            {nowPlayingData && (
-              <Slider
-                title={"Now Playing"}
-                movies={{ results: nowPlayingData.results }}
-                layoutId={"now_playing"}
-              />
-            )}
-            {upCommingData && (
-              <Slider
-                title={"Up comming"}
-                movies={{ results: upCommingData.results }}
-                layoutId={"up_comming"}
-              />
-            )}
-            {topRatedData && (
-              <Slider
-                title={"Top Rated"}
-                movies={{ results: topRatedData.results }}
-                layoutId={"top_rated"}
-              />
-            )}
-          </Sliders>
-          <MovieDetail
-            nowPlayingMovies={nowPlayingData}
-            upCommingMovies={upCommingData}
-            topRatedMovies={topRatedData}
-          />
-        </>
+        nowPlayingData && (
+          <>
+            <Banner mediatype={"movies"} mediaItem={nowPlayingData} />
+            <Sliders>
+              {nowPlayingData && (
+                <Slider
+                  mediaType={"movies"}
+                  title={"Now Playing"}
+                  mediaItem={nowPlayingData}
+                  layoutId={"now_playing"}
+                />
+              )}
+              {upCommingData && (
+                <Slider
+                  mediaType={"movies"}
+                  title={"Up comming"}
+                  mediaItem={upCommingData}
+                  layoutId={"up_comming"}
+                />
+              )}
+              {topRatedData && (
+                <Slider
+                  mediaType={"movies"}
+                  title={"Top Rated"}
+                  mediaItem={topRatedData}
+                  layoutId={"top_rated"}
+                />
+              )}
+            </Sliders>
+            <MovieDetail
+              nowPlayingMovies={nowPlayingData}
+              upCommingMovies={upCommingData}
+              topRatedMovies={topRatedData}
+            />
+          </>
+        )
       )}
     </Container>
   );

@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import { Title, Row, BoxContainer, IndexBtn } from "../Common/SliderStyled";
 import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IGetMovies } from "../../Api/types";
+import { IMediaItems } from "../../Api/types";
 import styled from "styled-components";
 import { rowVariants } from "../../motionVariants";
 import BoxItem from "./BoxItem";
@@ -15,12 +15,14 @@ const Container = styled.div`
 `;
 
 interface ISliderProps {
+  mediaType: string;
   title: string;
-  movies: IGetMovies;
+  mediaItem: IMediaItems;
   layoutId: string;
 }
 
-function Slider({ title, movies, layoutId }: ISliderProps) {
+function Slider({ mediaType, title, mediaItem, layoutId }: ISliderProps) {
+  console.log(mediaItem.results);
   const { width } = useWindowSize();
   const offset =
     width >= 1440
@@ -39,6 +41,8 @@ function Slider({ title, movies, layoutId }: ISliderProps) {
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
 
+  const totalMideaItem = mediaItem.results.length - 1;
+
   const toggleLeaving = () => {
     leaving.current = !leaving.current;
   };
@@ -46,22 +50,21 @@ function Slider({ title, movies, layoutId }: ISliderProps) {
     if (leaving.current) return;
     toggleLeaving();
     setBack(false);
-    const totalMovies = movies.results.length - 1;
-    const maxIndex = Math.floor(totalMovies / offset) - 1;
+
+    const maxIndex = Math.floor(totalMideaItem / offset) - 1;
     setSliderIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
   };
   const indexDown = () => {
     if (leaving.current) return;
     toggleLeaving();
     setBack(true);
-    const totalMovies = movies.results.length - 1;
-    const maxIndex = Math.floor(totalMovies / offset) - 1;
+    const maxIndex = Math.floor(totalMideaItem / offset) - 1;
     setSliderIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
   };
 
   const onBoxClicked = useCallback(
-    (movieId: number) => {
-      navigate(`/movies/${layoutId}/${movieId}`);
+    (movieId?: number) => {
+      navigate(`/${mediaType}/${layoutId}/${movieId}`);
     },
     [navigate, layoutId]
   );
@@ -81,19 +84,16 @@ function Slider({ title, movies, layoutId }: ISliderProps) {
             custom={back}
             columns={offset}
           >
-            {movies?.results
-              .slice(
-                1 + offset * sliderIndex,
-                1 + offset * sliderIndex + offset
-              )
-              .map((movie) => (
+            {mediaItem?.results
+              .slice(offset * sliderIndex, offset * sliderIndex + offset)
+              .map((item) => (
                 <BoxItem
-                  key={movie.id}
-                  title={movie.title}
-                  backdrop={movie.backdrop_path}
-                  poster={movie.poster_path}
+                  key={item.id}
+                  title={item.title || item.name || ""}
+                  backdrop={item.backdrop_path}
+                  poster={item.poster_path}
                   layoutId={layoutId}
-                  movieId={movie.id}
+                  movieId={item.id}
                   onBoxClicked={onBoxClicked}
                 />
               ))}
