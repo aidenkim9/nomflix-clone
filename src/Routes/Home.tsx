@@ -12,15 +12,11 @@ import Banner from "../Components/Media/Banner";
 import Slider from "../Components/Media/Slider";
 import MediaDetail from "../Components/Media/MediaDetail";
 
-const Container = styled.div`
-  overflow-x: hidden;
-  height: 200vh;
-  scroll-behavior: smooth;
-`;
+const Container = styled.div``;
 
 const Sliders = styled.div`
   position: relative;
-  top: -10%;
+  top: -12rem;
 `;
 
 function Home() {
