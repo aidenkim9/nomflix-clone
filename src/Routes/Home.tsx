@@ -1,11 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { IMediaItems } from "../Api/types";
-import { getMovies, getTopRated, getUpcomming } from "../Api/api";
+import {
+  getMovies,
+  getTopRated,
+  getTrendingMovie,
+  getUpcomming,
+} from "../Api/api";
 import { Loader } from "../Components/Common/SliderStyled";
 import styled from "styled-components";
-import Banner from "../Components/Home/Banner";
-import Slider from "../Components/Home/Slider";
-import MovieDetail from "../Components/Home/MovieDetail";
+import Banner from "../Components/Media/Banner";
+import Slider from "../Components/Media/Slider";
+import MediaDetail from "../Components/Media/MediaDetail";
 
 const Container = styled.div`
   overflow-x: hidden;
@@ -34,45 +39,74 @@ function Home() {
       queryKey: ["movies", "topRated"],
       queryFn: getTopRated,
     });
+  const { data: trendingData, isLoading: trendingLoading } =
+    useQuery<IMediaItems>({
+      queryKey: ["movies", "trending"],
+      queryFn: getTrendingMovie,
+    });
 
   return (
     <Container>
       {nowPlayingDataLoading || upcommingDataLoading || topRatedLoading ? (
         <Loader>Loading...</Loader>
       ) : (
-        nowPlayingData && (
+        nowPlayingData &&
+        upCommingData &&
+        topRatedData &&
+        trendingData && (
           <>
-            <Banner mediatype={"movies"} mediaItem={nowPlayingData} />
+            <Banner mediatype={"movie"} mediaItem={nowPlayingData} />
             <Sliders>
-              {nowPlayingData && (
-                <Slider
-                  mediaType={"movies"}
-                  title={"Now Playing"}
-                  mediaItem={nowPlayingData}
-                  layoutId={"now_playing"}
-                />
-              )}
-              {upCommingData && (
-                <Slider
-                  mediaType={"movies"}
-                  title={"Up comming"}
-                  mediaItem={upCommingData}
-                  layoutId={"up_comming"}
-                />
-              )}
-              {topRatedData && (
-                <Slider
-                  mediaType={"movies"}
-                  title={"Top Rated"}
-                  mediaItem={topRatedData}
-                  layoutId={"top_rated"}
-                />
-              )}
+              <Slider
+                mediaType={"movie"}
+                title={"Now Playing"}
+                mediaItem={nowPlayingData}
+                layoutIdPrefix={"now_playing"}
+              />
+              <Slider
+                mediaType={"movie"}
+                title={"Up comming"}
+                mediaItem={upCommingData}
+                layoutIdPrefix={"up_comming"}
+              />
+              <Slider
+                mediaType={"movie"}
+                title={"Top Rated"}
+                mediaItem={topRatedData}
+                layoutIdPrefix={"top_rated"}
+              />
+              <Slider
+                mediaType={"movie"}
+                title={"Trending"}
+                mediaItem={trendingData}
+                layoutIdPrefix={"trending"}
+              />
             </Sliders>
-            <MovieDetail
-              nowPlayingMovies={nowPlayingData}
-              upCommingMovies={upCommingData}
-              topRatedMovies={topRatedData}
+
+            <MediaDetail
+              mediaType={"movie"}
+              layoutIdPrefix={"banner"}
+              mediaItems={nowPlayingData}
+            />
+            <MediaDetail
+              mediaType={"movie"}
+              layoutIdPrefix={"now_playing"}
+              mediaItems={nowPlayingData}
+            />
+            <MediaDetail
+              mediaType={"movie"}
+              layoutIdPrefix={"up_comming"}
+              mediaItems={upCommingData}
+            />
+            <MediaDetail
+              mediaType={"movie"}
+              layoutIdPrefix={"top_rated"}
+              mediaItems={topRatedData}
+            />
+            <MediaDetail
+              mediaType={"movie"}
+              layoutIdPrefix={"trending"}
+              mediaItems={trendingData}
             />
           </>
         )

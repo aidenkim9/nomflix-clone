@@ -1,5 +1,4 @@
 import { AnimatePresence } from "framer-motion";
-
 import { Title, Row, BoxContainer, IndexBtn } from "../Common/SliderStyled";
 import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,10 +17,10 @@ interface ISliderProps {
   mediaType: string;
   title: string;
   mediaItem: IMediaItems;
-  layoutId: string;
+  layoutIdPrefix: string;
 }
 
-function Slider({ mediaType, title, mediaItem, layoutId }: ISliderProps) {
+function Slider({ mediaType, title, mediaItem, layoutIdPrefix }: ISliderProps) {
   console.log(mediaItem.results);
   const { width } = useWindowSize();
   const offset =
@@ -63,10 +62,10 @@ function Slider({ mediaType, title, mediaItem, layoutId }: ISliderProps) {
   };
 
   const onBoxClicked = useCallback(
-    (movieId?: number) => {
-      navigate(`/${mediaType}/${layoutId}/${movieId}`);
+    (mediaId?: number) => {
+      navigate(`/${mediaType}/${layoutIdPrefix}/${mediaId}`);
     },
-    [navigate, layoutId]
+    [navigate, layoutIdPrefix]
   );
 
   return (
@@ -92,8 +91,8 @@ function Slider({ mediaType, title, mediaItem, layoutId }: ISliderProps) {
                   title={item.title || item.name || ""}
                   backdrop={item.backdrop_path}
                   poster={item.poster_path}
-                  layoutId={layoutId}
-                  movieId={item.id}
+                  layoutIdPrefix={layoutIdPrefix}
+                  mediaId={item.id}
                   onBoxClicked={onBoxClicked}
                 />
               ))}

@@ -29,16 +29,18 @@ interface IGenres {
   name: string;
 }
 
-export interface IMovieDetail {
+export interface IMediaDetail {
   genres: IGenres[];
   id: number;
+  title?: string;
+  name?: string;
+  poster_path: string;
   overview: string;
   popularity: string;
-  poster_path: string;
-  release_date: string;
-  revenue: number;
-  title: string;
+  release_date?: string;
+  first_air_date?: string;
   vote_average: number;
   tagline: string;
-  runtime: string;
+  runtime?: string;
+  number_of_seasons?: string;
 }

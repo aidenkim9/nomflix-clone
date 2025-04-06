@@ -10,7 +10,7 @@ export const Overlay = styled(motion.div)`
   opacity: 0;
 `;
 
-export const BigMovie = styled(motion.div)`
+export const BigMovie = styled(motion.div)<{ bgphoto: string }>`
   border-radius: 1rem;
   width: 60vw;
   height: 80vh;
@@ -21,7 +21,10 @@ export const BigMovie = styled(motion.div)`
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-color: ${(props) => props.theme.black.lighter};
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+    url(${(props) => props.bgphoto});
+  background-position: center center;
+  background-size: cover;
   @media screen and (max-width: 1024px) {
     width: 70vw;
     height: 80vh;
@@ -59,7 +62,7 @@ export const BigCover = styled.div`
 export const BigTitle = styled.h1`
   font-size: 2rem;
   position: absolute;
-  top: 42%;
+  top: 48%;
   left: 40%;
   width: 55%;
   font-weight: bold;
@@ -115,6 +118,7 @@ export const BigHeader = styled.div`
 
 export const BigGenres = styled.ul`
   display: flex;
+  justify-content: space-between;
   li {
     margin-right: 3%;
   }

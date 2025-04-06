@@ -1,10 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { IMediaItems } from "../Api/types";
-import { getOnAirTv, getAringToDayTv, getTopRatedTv } from "../Api/api";
+import {
+  getOnAirTv,
+  getAringToDayTv,
+  getTopRatedTv,
+  getTrendingTv,
+} from "../Api/api";
 import { Loader } from "../Components/Common/SliderStyled";
 import styled from "styled-components";
-import Banner from "../Components/Home/Banner";
-import Slider from "../Components/Home/Slider";
+import Banner from "../Components/Media/Banner";
+import Slider from "../Components/Media/Slider";
+import MediaDetail from "../Components/Media/MediaDetail";
 
 const Container = styled.div`
   overflow-x: hidden;
@@ -32,47 +38,75 @@ function Tv() {
       queryKey: ["tv", "topRated"],
       queryFn: getTopRatedTv,
     });
+  const { data: trendingData, isLoading: trendingLoading } =
+    useQuery<IMediaItems>({
+      queryKey: ["tv", "trending"],
+      queryFn: getTrendingTv,
+    });
 
   return (
     <Container>
       {onAirLoading || aringToDayLoading || topRatedLoading ? (
         <Loader>Loading...</Loader>
       ) : (
-        onAirData && (
+        onAirData &&
+        aringToDayData &&
+        topRatedData &&
+        trendingData && (
           <>
-            <Banner mediatype={"tv_show"} mediaItem={onAirData} />
+            <Banner mediatype={"tv"} mediaItem={onAirData} />
             <Sliders>
-              {onAirData && (
-                <Slider
-                  mediaType={"tv_shows"}
-                  title={"On The Air"}
-                  mediaItem={onAirData}
-                  layoutId={"on_the_air"}
-                />
-              )}
-              {aringToDayData && (
-                <Slider
-                  mediaType={"tv_shows"}
-                  title={"Aring Today"}
-                  mediaItem={aringToDayData}
-                  layoutId={"arsing_today"}
-                />
-              )}
-              {topRatedData && (
-                <Slider
-                  mediaType={"tv_shows"}
-                  title={"Top Rated"}
-                  mediaItem={topRatedData}
-                  layoutId={"top_rated"}
-                />
-              )}
-            </Sliders>
+              <Slider
+                mediaType={"tv"}
+                title={"On The Air"}
+                mediaItem={onAirData}
+                layoutIdPrefix={"on_the_air"}
+              />
 
-            {/* <MovieDetail
-            nowPlayingMovies={onAirData}
-            upCommingMovies={upCommingData}
-            topRatedMovies={topRatedData}
-          /> */}
+              <Slider
+                mediaType={"tv"}
+                title={"Aring Today"}
+                mediaItem={aringToDayData}
+                layoutIdPrefix={"airing_today"}
+              />
+              <Slider
+                mediaType={"tv"}
+                title={"Top Rated"}
+                mediaItem={topRatedData}
+                layoutIdPrefix={"top_rated"}
+              />
+              <Slider
+                mediaType={"tv"}
+                title={"Trending"}
+                mediaItem={trendingData}
+                layoutIdPrefix={"trending"}
+              />
+            </Sliders>
+            <MediaDetail
+              mediaType={"tv"}
+              layoutIdPrefix={"banner"}
+              mediaItems={onAirData}
+            />
+            <MediaDetail
+              mediaType={"tv"}
+              layoutIdPrefix={"on_the_air"}
+              mediaItems={onAirData}
+            />
+            <MediaDetail
+              mediaType={"tv"}
+              layoutIdPrefix={"airing_today"}
+              mediaItems={aringToDayData}
+            />
+            <MediaDetail
+              mediaType={"tv"}
+              layoutIdPrefix={"top_rated"}
+              mediaItems={topRatedData}
+            />
+            <MediaDetail
+              mediaType={"tv"}
+              layoutIdPrefix={"trending"}
+              mediaItems={trendingData}
+            />
           </>
         )
       )}

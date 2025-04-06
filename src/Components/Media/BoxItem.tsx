@@ -4,8 +4,8 @@ import { getBgPath } from "../../utils";
 import { memo } from "react";
 
 interface IBoxProps {
-  layoutId: string;
-  movieId: number;
+  layoutIdPrefix: string;
+  mediaId: number;
   title: string;
   backdrop: string;
   poster: string;
@@ -13,8 +13,8 @@ interface IBoxProps {
 }
 
 function BoxItem({
-  layoutId,
-  movieId,
+  layoutIdPrefix,
+  mediaId,
   title,
   backdrop,
   poster,
@@ -23,8 +23,8 @@ function BoxItem({
   return (
     <>
       <Box
-        layoutId={`${layoutId}/` + movieId + ""}
-        onClick={() => onBoxClicked(movieId)}
+        layoutId={`${layoutIdPrefix}/` + mediaId + ""}
+        onClick={() => onBoxClicked(mediaId)}
         variants={boxVariants}
         whileHover="hover"
         initial="normal"

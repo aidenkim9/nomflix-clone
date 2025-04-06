@@ -22,12 +22,13 @@ export async function getTopRated() {
   return json;
 }
 
-export async function getMovieDetail(movieId: string) {
+export async function getTrendingMovie() {
   const json = await (
-    await fetch(`${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}`)
+    await fetch(`${BASE_PATH}/trending/movie/day?api_key=${API_KEY}`)
   ).json();
   return json;
 }
+
 export async function getSearchMovies(keyword: string) {
   const json = await (
     await fetch(`${BASE_PATH}/search/movie?query=${keyword}&api_key=${API_KEY}`)
@@ -52,6 +53,20 @@ export async function getAringToDayTv() {
 export async function getTopRatedTv() {
   const json = await (
     await fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}`)
+  ).json();
+  return json;
+}
+
+export async function getTrendingTv() {
+  const json = await (
+    await fetch(`${BASE_PATH}/trending/tv/day?api_key=${API_KEY}`)
+  ).json();
+  return json;
+}
+
+export async function getMediaDetail(mediaType: string, mediaId: string) {
+  const json = await (
+    await fetch(`${BASE_PATH}/${mediaType}/${mediaId}?api_key=${API_KEY}`)
   ).json();
   return json;
 }

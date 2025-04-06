@@ -15,13 +15,18 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/movies/banner/:movieId" element={<Home />} />
-        <Route path="/movies/now_playing/:movieId" element={<Home />} />
-        <Route path="/movies/up_comming/:movieId" element={<Home />} />
-        <Route path="/movies/top_rated/:movieId" element={<Home />} />
+        <Route path="/movie/banner/:mediaId" element={<Home />} />
+        <Route path="/movie/now_playing/:mediaId" element={<Home />} />
+        <Route path="/movie/up_comming/:mediaId" element={<Home />} />
+        <Route path="/movie/top_rated/:mediaId" element={<Home />} />
+        <Route path="/movie/trending/:mediaId" element={<Home />} />
         <Route path="/tv" element={<Tv />} />
+        <Route path="/tv/on_the_air/:mediaId" element={<Tv />} />
+        <Route path="/tv/airing_today/:mediaId" element={<Tv />} />
+        <Route path="/tv/top_rated/:mediaId" element={<Tv />} />
+        <Route path="/tv/trending/:mediaId" element={<Tv />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/search/:movieId" element={<Search />} />
+        <Route path="/search/:mediaId" element={<Search />} />
       </Routes>
       <Footer />
     </BrowserRouter>

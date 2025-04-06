@@ -18,8 +18,8 @@ import {
   BigTagline,
   BigOverview,
 } from "../Components/Common/SearchStyled";
-import { IMediaItems, IMovieDetail } from "../Api/types";
-import { getMovieDetail, getSearchMovies } from "../Api/api";
+import { IMediaDetail, IMediaItems } from "../Api/types";
+import { getMediaDetail, getSearchMovies } from "../Api/api";
 import { getBgPath } from "../utils";
 import { AnimatePresence } from "framer-motion";
 import { movieVariants, bigMovieVariants } from "../motionVariants";
@@ -45,9 +45,10 @@ function Search() {
     (movie) => movie.id === Number(movieMatch?.params.movieId)
   );
   const { data: movieDetailData, isLoading: movieDetailIsLoading } =
-    useQuery<IMovieDetail>({
+    useQuery<IMediaDetail>({
       queryKey: ["movies", "detail", clickedMovie],
-      queryFn: () => getMovieDetail(clickedMovie ? clickedMovie.id + "" : ""),
+      queryFn: () =>
+        getMediaDetail("movies", clickedMovie ? clickedMovie.id + "" : ""),
     });
 
   const goMovieDetail = (movieId: number) => {
@@ -111,13 +112,12 @@ function Search() {
                           }}
                         />
                         <BigTitle>{clickedMovie.title}</BigTitle>
-                        <BigPoster
-                          bgphoto={getBgPath(movieDetailData.poster_path)}
-                        />
                         <BigInfo>
                           <BigHeader>
                             <span>
-                              {movieDetailData.release_date.slice(0, 4)}
+                              {movieDetailData.release_date
+                                ? movieDetailData.release_date.slice(0, 4)
+                                : ""}
                             </span>
                             <span>{movieDetailData.runtime}m</span>
                             <BigGenres>
