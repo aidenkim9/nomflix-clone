@@ -12,7 +12,9 @@ import Banner from "../Components/Media/Banner";
 import Slider from "../Components/Media/Slider";
 import MediaDetail from "../Components/Media/MediaDetail";
 
-const Container = styled.div``;
+const Container = styled.div`
+  overflow: hidden;
+`;
 
 const Sliders = styled.div`
   position: relative;

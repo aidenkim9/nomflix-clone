@@ -12,7 +12,7 @@ export const Overlay = styled(motion.div)`
 
 export const BigMovie = styled(motion.div)<{ bgphoto: string }>`
   border-radius: 1rem;
-  width: 60vw;
+  width: 65vw;
   height: 80vh;
   position: fixed;
   overflow: hidden;
@@ -30,6 +30,11 @@ export const BigMovie = styled(motion.div)<{ bgphoto: string }>`
     height: 80vh;
   }
   @media screen and (max-width: 768px) {
+    width: 90vw;
+    height: 90vh;
+    top: 4.2rem;
+  }
+  @media screen and (max-width: 480px) {
     width: 100vw;
     height: 100vh;
     top: 4.2rem;
@@ -52,36 +57,25 @@ export const BigX = styled.div`
   color: ${(props) => props.theme.white.darker};
 `;
 
-export const BigCover = styled.div`
-  width: 100%;
-  height: 55%;
-  background-size: cover;
-  background-position: center center;
-`;
-
 export const BigTitle = styled.h1`
-  font-size: 2rem;
+  font-size: 2.2rem;
   position: absolute;
-  top: 48%;
+  top: 47%;
   left: 40%;
   width: 55%;
   font-weight: bold;
-`;
-
-export const BigOverview = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  @media screen and (max-width: 768px) {
-    font-size: 0.9rem;
-    top: 0;
+  @media screen and (max-width: 1024px) {
+    top: 48%;
+    font-size: 1.9rem;
   }
-`;
-
-export const BigTagline = styled.span`
-  font-style: italic;
-  opacity: 0.9;
-  margin-bottom: 1rem;
+  @media screen and (max-width: 768px) {
+    top: 51%;
+    font-size: 1.7rem;
+  }
+  @media screen and (max-width: 480px) {
+    top: 53%;
+    font-size: 1.7rem;
+  }
 `;
 
 export const BigPoster = styled.div<{ bgphoto: string }>`
@@ -93,8 +87,16 @@ export const BigPoster = styled.div<{ bgphoto: string }>`
   position: absolute;
   top: 35%;
   left: 5%;
+  @media screen and (max-width: 1024px) {
+    top: 45%;
+    height: 45%;
+  }
   @media screen and (max-width: 768px) {
-    height: 40%;
+    top: 50%;
+    height: 35%;
+  }
+  @media screen and (max-width: 480px) {
+    height: 50%;
   }
 `;
 
@@ -108,12 +110,45 @@ export const BigInfo = styled.div`
   padding-bottom: 10rem;
 `;
 
+export const BigOverview = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  @media screen and (max-width: 1024px) {
+    font-size: 0.9rem;
+    top: 0;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 0.8rem;
+    top: 0;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 0.7rem;
+    top: 0;
+  }
+`;
+
+export const BigTagline = styled.span`
+  font-style: italic;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+`;
+
 export const BigHeader = styled.div`
   display: flex;
   margin-bottom: 2%;
   span,
   ul {
     margin-right: 2%;
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 1rem;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 0.6rem;
   }
 `;
 

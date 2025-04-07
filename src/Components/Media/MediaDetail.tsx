@@ -7,7 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   Overlay,
   BigMovie,
-  BigCover,
   BigPoster,
   BigHeader,
   BigTitle,

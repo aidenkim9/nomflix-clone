@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Loader } from "../Components/Common/SliderStyled";
-import { SearchTitle, Movies } from "../Components/Common/SearchStyled";
 import { IMediaItems } from "../Api/types";
 import { getSearchMedia } from "../Api/api";
 
@@ -10,8 +9,31 @@ import MediaDetail from "../Components/Media/MediaDetail";
 import BoxItem from "../Components/Media/BoxItem";
 
 const Container = styled.div`
-  height: 100vh;
   margin-top: 10%;
+  min-height: 100vh;
+`;
+
+export const Movies = styled.div`
+  padding: 4rem;
+  height: 100%;
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 10px;
+  @media screen and (max-width: 768px) {
+    padding: 30px;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  }
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  }
+`;
+
+export const SearchTitle = styled.h1`
+  font-size: 1.5rem;
+  margin-left: 5%;
 `;
 
 function Search() {

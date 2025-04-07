@@ -15,8 +15,14 @@ const Container = styled.div<{ bgphoto: string }>`
     url(${(props) => props.bgphoto});
   background-size: cover;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     padding: 3vw;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 4vw;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 5vw;
   }
 `;
 const Title = styled.h1`
@@ -24,16 +30,33 @@ const Title = styled.h1`
   margin-bottom: 1.5rem;
   font-weight: bold;
   width: 50%;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     font-size: 3.5rem;
+    width: 55%;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 3rem;
+    width: 60%;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 2.5rem;
+    width: 65%;
   }
 `;
 const Overview = styled.p`
   font-size: 1.3rem;
   width: 45%;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     font-size: 1.1rem;
     width: 60%;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    width: 70%;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 0.8rem;
+    width: 80%;
   }
 `;
 
@@ -64,9 +87,17 @@ const Button = styled(motion.div)`
   &:hover {
     opacity: 0.8;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     height: 2.5rem;
+    font-size: 1rem;
+  }
+  @media screen and (max-width: 768px) {
+    height: 2.2rem;
     font-size: 0.9rem;
+  }
+  @media screen and (max-width: 480px) {
+    height: 1.5rem;
+    font-size: 0.8rem;
   }
 `;
 
