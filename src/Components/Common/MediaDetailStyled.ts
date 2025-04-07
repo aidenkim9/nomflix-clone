@@ -11,6 +11,8 @@ export const Overlay = styled(motion.div)`
 `;
 
 export const BigMovie = styled(motion.div)<{ bgphoto: string }>`
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   border-radius: 1rem;
   width: 65vw;
   height: 80vh;
@@ -79,6 +81,8 @@ export const BigTitle = styled.h1`
 `;
 
 export const BigPoster = styled.div<{ bgphoto: string }>`
+  aspect-ratio: 2/3;
+  object-fit: cover;
   background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
