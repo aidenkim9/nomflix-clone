@@ -35,6 +35,7 @@ export interface IMediaDetail {
   title?: string;
   name?: string;
   poster_path: string;
+  backdrop_path?: string;
   overview: string;
   popularity: string;
   release_date?: string;

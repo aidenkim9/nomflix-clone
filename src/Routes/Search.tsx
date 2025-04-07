@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useMatch,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import styled from "styled-components";
 import { Loader } from "../Components/Common/SliderStyled";
 import { IMediaItems } from "../Api/types";
@@ -51,7 +56,7 @@ function Search() {
   const goMovieDetail = (movieId: number) => {
     navigate(`/search/${type}/${movieId}?keyword=${keyword}`);
   };
-
+  const match = useMatch(`/search/:layoutPrefix/:mediaId`);
   return (
     <Container>
       {searchIsLoading ? (
@@ -76,11 +81,13 @@ function Search() {
                 ) : null
               )}
             </Movies>
-            <MediaDetail
-              mediaType={type}
-              layoutIdPrefix={type}
-              mediaItems={searchData}
-            />
+            {match ? (
+              <MediaDetail
+                mediaType={match.params.layoutPrefix + ""}
+                layoutIdPrefix={match.params.layoutPrefix + ""}
+                mediaId={match.params.mediaId + ""}
+              />
+            ) : null}
           </>
         )
       )}

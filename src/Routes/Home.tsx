@@ -11,6 +11,7 @@ import styled from "styled-components";
 import Banner from "../Components/Media/Banner";
 import Slider from "../Components/Media/Slider";
 import MediaDetail from "../Components/Media/MediaDetail";
+import { useMatch } from "react-router-dom";
 
 const Container = styled.div`
   overflow: hidden;
@@ -43,6 +44,7 @@ function Home() {
       queryFn: getTrendingMovie,
     });
 
+  const match = useMatch(`/movie/:layoutPrefix/:mediaId`);
   return (
     <Container>
       {nowPlayingDataLoading || upcommingDataLoading || topRatedLoading ? (
@@ -80,32 +82,13 @@ function Home() {
                 layoutIdPrefix={"trending"}
               />
             </Sliders>
-
-            <MediaDetail
-              mediaType={"movie"}
-              layoutIdPrefix={"banner"}
-              mediaItems={nowPlayingData}
-            />
-            <MediaDetail
-              mediaType={"movie"}
-              layoutIdPrefix={"now_playing"}
-              mediaItems={nowPlayingData}
-            />
-            <MediaDetail
-              mediaType={"movie"}
-              layoutIdPrefix={"up_comming"}
-              mediaItems={upCommingData}
-            />
-            <MediaDetail
-              mediaType={"movie"}
-              layoutIdPrefix={"top_rated"}
-              mediaItems={topRatedData}
-            />
-            <MediaDetail
-              mediaType={"movie"}
-              layoutIdPrefix={"trending"}
-              mediaItems={trendingData}
-            />
+            {match ? (
+              <MediaDetail
+                mediaType={"movie"}
+                layoutIdPrefix={match.params.layoutPrefix + ""}
+                mediaId={match.params.mediaId + ""}
+              />
+            ) : null}
           </>
         )
       )}

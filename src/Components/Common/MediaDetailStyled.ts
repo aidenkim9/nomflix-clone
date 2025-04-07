@@ -19,7 +19,7 @@ export const BigMovie = styled(motion.div)<{ bgphoto: string }>`
   position: fixed;
   overflow: hidden;
   overflow-y: scroll;
-  top: 7rem;
+  top: 6rem;
   left: 0;
   right: 0;
   margin: 0 auto;

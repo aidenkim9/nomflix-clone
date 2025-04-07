@@ -11,6 +11,7 @@ import styled from "styled-components";
 import Banner from "../Components/Media/Banner";
 import Slider from "../Components/Media/Slider";
 import MediaDetail from "../Components/Media/MediaDetail";
+import { useMatch } from "react-router-dom";
 
 const Container = styled.div`
   overflow: hidden;
@@ -41,6 +42,7 @@ function Tv() {
       queryKey: ["tv", "trending"],
       queryFn: getTrendingTv,
     });
+  const match = useMatch(`/tv/:layoutPrefix/:mediaId`);
 
   return (
     <Container>
@@ -80,31 +82,13 @@ function Tv() {
                 layoutIdPrefix={"trending"}
               />
             </Sliders>
-            <MediaDetail
-              mediaType={"tv"}
-              layoutIdPrefix={"banner"}
-              mediaItems={onAirData}
-            />
-            <MediaDetail
-              mediaType={"tv"}
-              layoutIdPrefix={"on_the_air"}
-              mediaItems={onAirData}
-            />
-            <MediaDetail
-              mediaType={"tv"}
-              layoutIdPrefix={"airing_today"}
-              mediaItems={aringToDayData}
-            />
-            <MediaDetail
-              mediaType={"tv"}
-              layoutIdPrefix={"top_rated"}
-              mediaItems={topRatedData}
-            />
-            <MediaDetail
-              mediaType={"tv"}
-              layoutIdPrefix={"trending"}
-              mediaItems={trendingData}
-            />
+            {match ? (
+              <MediaDetail
+                mediaType={"tv"}
+                layoutIdPrefix={match.params.layoutPrefix + ""}
+                mediaId={match.params.mediaId + ""}
+              />
+            ) : null}
           </>
         )
       )}

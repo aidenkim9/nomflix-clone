@@ -20,37 +20,28 @@ import {
 interface IMediaDetailProps {
   mediaType: string;
   layoutIdPrefix: string;
-  mediaItems: IMediaItems;
+  mediaId: string;
 }
 
 function MediaDetail({
   mediaType,
   layoutIdPrefix,
-  mediaItems,
+  mediaId,
 }: IMediaDetailProps) {
   const navigate = useNavigate();
-  const normalMath = useMatch(`/${mediaType}/${layoutIdPrefix}/:mediaId`);
-  const searchMatch = useMatch(`/search/${mediaType}/:mediaId`);
-  const match = normalMath || searchMatch;
-
-  const clickedMedia = match?.params.mediaId
-    ? mediaItems.results.find(
-        (item) => item.id === Number(match.params.mediaId)
-      )
-    : "";
-
-  const { data: mediaDetailData, isLoading: mediaDetailLoading } =
-    useQuery<IMediaDetail>({
-      queryKey: [mediaType, layoutIdPrefix, clickedMedia],
-      queryFn: () =>
-        getMediaDetail(mediaType, clickedMedia ? clickedMedia.id + "" : ""),
-    });
+  const {
+    data: mediaDetailData,
+    isError,
+    error,
+    isLoading: mediaDetailLoading,
+  } = useQuery<IMediaDetail>({
+    queryKey: [mediaType, layoutIdPrefix, mediaId],
+    queryFn: () => getMediaDetail(mediaType, mediaId),
+  });
 
   const goBackPage = () => {
     navigate(-1);
   };
-
-  console.log(match, mediaDetailData);
 
   // useEffect(() => {
   //   if (clickedMovie) {
@@ -60,67 +51,69 @@ function MediaDetail({
   //     document.body.style.overflow = "auto";
   //   };
   // }, [clickedMovie]);
-
+  if (isError) return <>{error.message}</>;
   return (
     <>
       <AnimatePresence>
-        {match && clickedMedia ? (
-          <>
-            <Overlay
-              onClick={goBackPage}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-            <BigMovie
-              bgphoto={getBgPath(clickedMedia.backdrop_path)}
-              layoutId={`${layoutIdPrefix}/${match.params.mediaId}`}
-            >
-              <BigX onClick={goBackPage}>X</BigX>
-              {mediaDetailData && (
-                <>
-                  <BigTitle>{clickedMedia.title || clickedMedia.name}</BigTitle>
-                  <BigPoster bgphoto={getBgPath(mediaDetailData.poster_path)} />
-                  <BigInfo>
-                    <BigHeader>
-                      <span>
-                        📅{" "}
-                        {mediaDetailData.release_date
-                          ? mediaDetailData.release_date.slice(0, 4)
-                          : mediaDetailData.first_air_date
-                          ? mediaDetailData.first_air_date.slice(0, 4)
-                          : ""}
-                      </span>
-                      <span>
-                        {mediaDetailData.runtime
-                          ? `${mediaDetailData.runtime}m`
-                          : mediaDetailData.number_of_seasons
-                          ? `${mediaDetailData.number_of_seasons} seasons`
-                          : ""}
-                      </span>
-                      <BigGenres>
-                        <span>🎭</span>
-                        {mediaDetailData.genres
-                          .slice(0, 2)
-                          .map((genre, index) => (
-                            <li key={index}>{genre.name}</li>
-                          ))}
-                      </BigGenres>
-                      <span>⭐️ {mediaDetailData.vote_average}</span>
-                    </BigHeader>
-                    <BigOverview>
-                      <BigTagline>
-                        {mediaDetailData.tagline
-                          ? "【 " + mediaDetailData.tagline + " 】"
-                          : null}
-                      </BigTagline>
-                      {clickedMedia.overview}
-                    </BigOverview>
-                  </BigInfo>
-                </>
-              )}
-            </BigMovie>
-          </>
-        ) : null}
+        <>
+          <Overlay
+            onClick={goBackPage}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+          <BigMovie
+            bgphoto={getBgPath(
+              mediaDetailData ? mediaDetailData.backdrop_path + "" : ""
+            )}
+            layoutId={`${layoutIdPrefix}/${mediaId}`}
+          >
+            <BigX onClick={goBackPage}>X</BigX>
+            {mediaDetailData && (
+              <>
+                <BigTitle>
+                  {mediaDetailData.title || mediaDetailData.name}
+                </BigTitle>
+                <BigPoster bgphoto={getBgPath(mediaDetailData.poster_path)} />
+                <BigInfo>
+                  <BigHeader>
+                    <span>
+                      📅{" "}
+                      {mediaDetailData.release_date
+                        ? mediaDetailData.release_date.slice(0, 4)
+                        : mediaDetailData.first_air_date
+                        ? mediaDetailData.first_air_date.slice(0, 4)
+                        : ""}
+                    </span>
+                    <span>
+                      {mediaDetailData.runtime
+                        ? `${mediaDetailData.runtime}m`
+                        : mediaDetailData.number_of_seasons
+                        ? `${mediaDetailData.number_of_seasons} seasons`
+                        : ""}
+                    </span>
+                    <BigGenres>
+                      <span>🎭</span>
+                      {mediaDetailData.genres
+                        .slice(0, 2)
+                        .map((genre, index) => (
+                          <li key={index}>{genre.name}</li>
+                        ))}
+                    </BigGenres>
+                    <span>⭐️ {mediaDetailData.vote_average}</span>
+                  </BigHeader>
+                  <BigOverview>
+                    <BigTagline>
+                      {mediaDetailData.tagline
+                        ? "【 " + mediaDetailData.tagline + " 】"
+                        : null}
+                    </BigTagline>
+                    {mediaDetailData.overview}
+                  </BigOverview>
+                </BigInfo>
+              </>
+            )}
+          </BigMovie>
+        </>
       </AnimatePresence>
     </>
   );
