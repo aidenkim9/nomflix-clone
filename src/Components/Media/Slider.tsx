@@ -21,7 +21,6 @@ interface ISliderProps {
 }
 
 function Slider({ mediaType, title, mediaItem, layoutIdPrefix }: ISliderProps) {
-  console.log(mediaItem.results);
   const { width } = useWindowSize();
   const offset =
     width >= 1440
@@ -100,10 +99,10 @@ function Slider({ mediaType, title, mediaItem, layoutIdPrefix }: ISliderProps) {
         </AnimatePresence>
 
         <IndexBtn onClick={indexDown} whileHover={{ opacity: 1 }}>
-          ⬅︎
+          {"<"}
         </IndexBtn>
         <IndexBtn onClick={indexUp} whileHover={{ opacity: 1 }}>
-          ➡︎
+          {">"}
         </IndexBtn>
       </Row>
     </Container>

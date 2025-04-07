@@ -3,6 +3,7 @@ import { motion, useAnimation, useScroll } from "framer-motion";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { logoVariants } from "../../motionVariants";
 
 const Nav = styled(motion.nav)`
   width: 100%;
@@ -56,14 +57,6 @@ const Circle = styled(motion.span)`
   margin: 0 auto;
   background-color: red;
 `;
-const logoVariants = {
-  normal: {
-    scale: 1,
-  },
-  active: {
-    scale: 1.1,
-  },
-};
 
 const Search = styled.form`
   display: flex;
@@ -74,9 +67,18 @@ const Search = styled.form`
     height: 25px;
   }
 `;
+
+const Select = styled(motion.select)`
+  background-color: transparent;
+  width: 1rem;
+  border-color: white;
+  position: absolute;
+  right: 20%;
+`;
+
 const Input = styled(motion.input)`
   transform-origin: right center;
-  width: 250px;
+  width: 15.5rem;
   color: white;
   position: absolute;
   z-index: -1;
@@ -87,6 +89,7 @@ const Input = styled(motion.input)`
 `;
 
 interface IForm {
+  type: string;
   keyword: string;
 }
 
@@ -113,10 +116,19 @@ function Header() {
   }, [scrollY]);
 
   const onValid = (data: IForm) => {
-    navigate(`/search?keyword=${data.keyword}`);
+    navigate(`/search/${data.type}?keyword=${data.keyword}`);
   };
 
   const inputVariants = {
+    initial: { scaleX: 0 },
+    click: (searchOpen: boolean) => ({
+      scaleX: searchOpen ? 1 : 0,
+    }),
+    exit: {
+      scaleX: 0,
+    },
+  };
+  const selectVariants = {
     initial: { scaleX: 0 },
     click: (searchOpen: boolean) => ({
       scaleX: searchOpen ? 1 : 0,
@@ -158,6 +170,17 @@ function Header() {
       </Col>
       <Col>
         <Search onSubmit={handleSubmit(onValid)}>
+          <Select
+            variants={selectVariants}
+            custom={searchOpen}
+            initial="initial"
+            animate="click"
+            exit="exit"
+            {...register("type", { required: true })}
+          >
+            <option value="movie">movie</option>
+            <option value="tv">tv</option>
+          </Select>
           <Input
             custom={searchOpen}
             variants={inputVariants}

@@ -105,6 +105,7 @@ export const BigInfo = styled.div`
   top: 60%;
   left: 40%;
   width: 100%;
+  padding-bottom: 10rem;
 `;
 
 export const BigHeader = styled.div`

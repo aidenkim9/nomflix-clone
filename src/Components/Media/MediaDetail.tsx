@@ -30,13 +30,15 @@ function MediaDetail({
   mediaItems,
 }: IMediaDetailProps) {
   const navigate = useNavigate();
-  const match = useMatch(`${mediaType}/${layoutIdPrefix}/:mediaId`);
+  const normalMath = useMatch(`/${mediaType}/${layoutIdPrefix}/:mediaId`);
+  const searchMatch = useMatch(`/search/${mediaType}/:mediaId`);
+  const match = normalMath || searchMatch;
 
   const clickedMedia = match?.params.mediaId
     ? mediaItems.results.find(
         (item) => item.id === Number(match.params.mediaId)
       )
-    : 0;
+    : "";
 
   const { data: mediaDetailData, isLoading: mediaDetailLoading } =
     useQuery<IMediaDetail>({
@@ -48,6 +50,8 @@ function MediaDetail({
   const goBackPage = () => {
     navigate(-1);
   };
+
+  console.log(match, mediaDetailData);
 
   // useEffect(() => {
   //   if (clickedMovie) {

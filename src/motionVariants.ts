@@ -1,3 +1,12 @@
+export const logoVariants = {
+  normal: {
+    scale: 1,
+  },
+  active: {
+    scale: 1.1,
+  },
+};
+
 export const rowVariants = {
   initial: (back: boolean) => ({
     x: back ? -window.innerWidth - 10 : window.innerWidth + 10,

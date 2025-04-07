@@ -29,9 +29,11 @@ export async function getTrendingMovie() {
   return json;
 }
 
-export async function getSearchMovies(keyword: string) {
+export async function getSearchMedia(type: string, keyword: string) {
   const json = await (
-    await fetch(`${BASE_PATH}/search/movie?query=${keyword}&api_key=${API_KEY}`)
+    await fetch(
+      `${BASE_PATH}/search/${type}?query=${keyword}&api_key=${API_KEY}`
+    )
   ).json();
   return json;
 }

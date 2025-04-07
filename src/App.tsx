@@ -12,22 +12,18 @@ function App() {
       <Helmet>
         <title>Nomfilx</title>
       </Helmet>
+
       <Header />
+
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/movie/banner/:mediaId" element={<Home />} />
-        <Route path="/movie/now_playing/:mediaId" element={<Home />} />
-        <Route path="/movie/up_comming/:mediaId" element={<Home />} />
-        <Route path="/movie/top_rated/:mediaId" element={<Home />} />
-        <Route path="/movie/trending/:mediaId" element={<Home />} />
+        <Route path="/movie/:layoutPrefix/:mediaId" element={<Home />} />
         <Route path="/tv" element={<Tv />} />
-        <Route path="/tv/on_the_air/:mediaId" element={<Tv />} />
-        <Route path="/tv/airing_today/:mediaId" element={<Tv />} />
-        <Route path="/tv/top_rated/:mediaId" element={<Tv />} />
-        <Route path="/tv/trending/:mediaId" element={<Tv />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/search/:mediaId" element={<Search />} />
+        <Route path="/tv/:layoutPrefix/:mediaId" element={<Tv />} />
+        <Route path="/search/:type" element={<Search />} />
+        <Route path="/search/:type/:mediaId" element={<Search />} />
       </Routes>
+
       <Footer />
     </BrowserRouter>
   );
