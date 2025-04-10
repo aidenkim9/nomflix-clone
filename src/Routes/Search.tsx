@@ -50,14 +50,11 @@ function Search() {
   const navigate = useNavigate();
   const keyword = new URLSearchParams(location.search).get("keyword");
 
-  const {
-    data: searchData,
-    isError,
-    isLoading: searchIsLoading,
-  } = useQuery<IMediaItems>({
-    queryKey: ["search", keyword],
-    queryFn: () => getSearchMedia(type + "", keyword + ""),
-  });
+  const { data: searchData, isLoading: searchIsLoading } =
+    useQuery<IMediaItems>({
+      queryKey: ["search", keyword],
+      queryFn: () => getSearchMedia(type + "", keyword + ""),
+    });
 
   const goMovieDetail = (movieId: number) => {
     navigate(`/search/${type}/${movieId}?keyword=${keyword}`);

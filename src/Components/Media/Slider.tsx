@@ -64,7 +64,7 @@ function Slider({ mediaType, title, mediaItem, layoutIdPrefix }: ISliderProps) {
     (mediaId?: number) => {
       navigate(`/${mediaType}/${layoutIdPrefix}/${mediaId}`);
     },
-    [navigate, layoutIdPrefix]
+    [navigate, mediaType, layoutIdPrefix]
   );
 
   return (
