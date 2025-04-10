@@ -69,11 +69,12 @@ const Search = styled.form`
 `;
 
 const Select = styled(motion.select)`
-  background-color: transparent;
-  width: 1rem;
+  width: 1.3rem;
+  height: 2.3rem;
   border-color: white;
   position: absolute;
-  right: 20%;
+  right: 5%;
+  outline: none;
 `;
 
 const Input = styled(motion.input)`

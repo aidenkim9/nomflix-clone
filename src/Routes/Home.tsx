@@ -47,7 +47,10 @@ function Home() {
   const match = useMatch(`/movie/:layoutPrefix/:mediaId`);
   return (
     <Container>
-      {nowPlayingDataLoading || upcommingDataLoading || topRatedLoading ? (
+      {nowPlayingDataLoading ||
+      upcommingDataLoading ||
+      topRatedLoading ||
+      trendingLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         nowPlayingData &&

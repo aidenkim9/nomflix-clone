@@ -17,8 +17,7 @@ const Container = styled.div`
   margin-top: 10%;
   min-height: 100vh;
 `;
-
-export const Movies = styled.div`
+const Movies = styled.div`
   padding: 4rem;
   height: 100%;
   display: grid;
@@ -35,10 +34,14 @@ export const Movies = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
   }
 `;
-
-export const SearchTitle = styled.h1`
+const SearchTitle = styled.h1`
   font-size: 1.5rem;
   margin-left: 5%;
+`;
+const ErrorMsg = styled.div`
+  font-size: 1.5rem;
+  margin-left: 7rem;
+  margin-top: 3rem;
 `;
 
 function Search() {
@@ -47,16 +50,20 @@ function Search() {
   const navigate = useNavigate();
   const keyword = new URLSearchParams(location.search).get("keyword");
 
-  const { data: searchData, isLoading: searchIsLoading } =
-    useQuery<IMediaItems>({
-      queryKey: ["search", keyword],
-      queryFn: () => getSearchMedia(type + "", keyword + ""),
-    });
-  console.log(searchData?.results.length);
+  const {
+    data: searchData,
+    isError,
+    isLoading: searchIsLoading,
+  } = useQuery<IMediaItems>({
+    queryKey: ["search", keyword],
+    queryFn: () => getSearchMedia(type + "", keyword + ""),
+  });
+
   const goMovieDetail = (movieId: number) => {
     navigate(`/search/${type}/${movieId}?keyword=${keyword}`);
   };
   const match = useMatch(`/search/:layoutPrefix/:mediaId`);
+
   return (
     <Container>
       {searchIsLoading ? (
@@ -65,22 +72,26 @@ function Search() {
         searchData &&
         type && (
           <>
-            <SearchTitle>{`Result of searching with "${keyword}"`}</SearchTitle>
-            <Movies>
-              {searchData.results.map((movie) =>
-                movie.backdrop_path ? (
-                  <BoxItem
-                    layoutIdPrefix={type}
-                    mediaId={movie.id}
-                    title={movie.title || ""}
-                    backdrop={movie.backdrop_path}
-                    poster={movie.poster_path}
-                    onBoxClicked={goMovieDetail}
-                    key={movie.id}
-                  />
-                ) : null
-              )}
-            </Movies>
+            <SearchTitle>{`Result of searching with "${keyword?.toUpperCase()}"`}</SearchTitle>
+            {searchData.results.length === 0 ? (
+              <ErrorMsg>{`No result of ${keyword}`}</ErrorMsg>
+            ) : (
+              <Movies>
+                {searchData.results.map((movie) =>
+                  movie.backdrop_path ? (
+                    <BoxItem
+                      layoutIdPrefix={type}
+                      mediaId={movie.id}
+                      title={movie.title || ""}
+                      backdrop={movie.backdrop_path}
+                      poster={movie.poster_path}
+                      onBoxClicked={goMovieDetail}
+                      key={movie.id}
+                    />
+                  ) : null
+                )}
+              </Movies>
+            )}
             {match ? (
               <MediaDetail
                 mediaType={match.params.layoutPrefix + ""}

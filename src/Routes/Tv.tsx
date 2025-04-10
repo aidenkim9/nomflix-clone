@@ -46,7 +46,10 @@ function Tv() {
 
   return (
     <Container>
-      {onAirLoading || aringToDayLoading || topRatedLoading ? (
+      {onAirLoading ||
+      aringToDayLoading ||
+      topRatedLoading ||
+      trendingLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         onAirData &&

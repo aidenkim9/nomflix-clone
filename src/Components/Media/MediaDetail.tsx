@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
-import { useMatch, useNavigate } from "react-router-dom";
-import { IMediaDetail, IMediaItems } from "../../Api/types";
+import { useNavigate } from "react-router-dom";
+import { IMediaDetail } from "../../Api/types";
 import { getMediaDetail } from "../../Api/api";
 import { getBgPath } from "../../utils";
 import { useQuery } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ import {
   BigTagline,
   BigX,
 } from "../Common/MediaDetailStyled";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface IMediaDetailProps {
   mediaType: string;
@@ -29,91 +30,142 @@ function MediaDetail({
   mediaId,
 }: IMediaDetailProps) {
   const navigate = useNavigate();
-  const {
-    data: mediaDetailData,
-    isError,
-    error,
-    isLoading: mediaDetailLoading,
-  } = useQuery<IMediaDetail>({
-    queryKey: [mediaType, layoutIdPrefix, mediaId],
-    queryFn: () => getMediaDetail(mediaType, mediaId),
-  });
+  const { data: mediaDetailData, isLoading: mediaDetailLoading } =
+    useQuery<IMediaDetail>({
+      queryKey: [mediaType, layoutIdPrefix, mediaId],
+      queryFn: () => getMediaDetail(mediaType, mediaId),
+    });
 
   const goBackPage = () => {
     navigate(-1);
   };
 
-  // useEffect(() => {
-  //   if (clickedMovie) {
-  //     document.body.style.overflow = "hidden";
-  //   }
-  //   return () => {
-  //     document.body.style.overflow = "auto";
-  //   };
-  // }, [clickedMovie]);
-  if (isError) return <>{error.message}</>;
   return (
     <>
       <AnimatePresence>
-        <>
-          <Overlay
-            onClick={goBackPage}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          />
-          <BigMovie
-            bgphoto={getBgPath(
-              mediaDetailData ? mediaDetailData.backdrop_path + "" : ""
-            )}
-            layoutId={`${layoutIdPrefix}/${mediaId}`}
-          >
+        {mediaDetailLoading ? (
+          <BigMovie bgphoto="" layoutId={`${layoutIdPrefix}/${mediaId}`}>
             <BigX onClick={goBackPage}>X</BigX>
-            {mediaDetailData && (
-              <>
-                <BigTitle>
-                  {mediaDetailData.title || mediaDetailData.name}
-                </BigTitle>
-                <BigPoster bgphoto={getBgPath(mediaDetailData.poster_path)} />
-                <BigInfo>
-                  <BigHeader>
-                    <span>
-                      📅{" "}
-                      {mediaDetailData.release_date
-                        ? mediaDetailData.release_date.slice(0, 4)
-                        : mediaDetailData.first_air_date
-                        ? mediaDetailData.first_air_date.slice(0, 4)
-                        : ""}
-                    </span>
-                    <span>
-                      {mediaDetailData.runtime
-                        ? `${mediaDetailData.runtime}m`
-                        : mediaDetailData.number_of_seasons
-                        ? `${mediaDetailData.number_of_seasons} seasons`
-                        : ""}
-                    </span>
-                    <BigGenres>
-                      <span>🎭</span>
-                      {mediaDetailData.genres
-                        .slice(0, 2)
-                        .map((genre, index) => (
-                          <li key={index}>{genre.name}</li>
-                        ))}
-                    </BigGenres>
-                    <span>⭐️ {mediaDetailData.vote_average}</span>
-                  </BigHeader>
-                  <BigOverview>
-                    <BigTagline>
-                      {mediaDetailData.tagline
-                        ? "【 " + mediaDetailData.tagline + " 】"
-                        : null}
-                    </BigTagline>
-                    {mediaDetailData.overview}
-                  </BigOverview>
-                </BigInfo>
-              </>
-            )}
+            <BigPoster bgphoto="" style={{ backgroundColor: "#444" }} />
+            <BigInfo>
+              <BigHeader>
+                <span
+                  style={{
+                    backgroundColor: "#333",
+                    width: "4rem",
+                    height: "1rem",
+                  }}
+                ></span>
+                <span
+                  style={{
+                    backgroundColor: "#333",
+                    width: "4rem",
+                    height: "1rem",
+                  }}
+                ></span>
+                <BigGenres>
+                  <li
+                    style={{
+                      backgroundColor: "#333",
+                      width: "3rem",
+                      height: "1rem",
+                    }}
+                  ></li>
+                  <li
+                    style={{
+                      backgroundColor: "#333",
+                      width: "3rem",
+                      height: "1rem",
+                    }}
+                  ></li>
+                </BigGenres>
+                <span
+                  style={{
+                    backgroundColor: "#333",
+                    width: "3rem",
+                    height: "1rem",
+                  }}
+                ></span>
+              </BigHeader>
+              <BigOverview>
+                <BigTagline
+                  style={{
+                    backgroundColor: "#333",
+                    height: "1rem",
+                    width: "80%",
+                  }}
+                />
+                <p
+                  style={{
+                    backgroundColor: "#333",
+                    height: "4rem",
+                    width: "100%",
+                  }}
+                />
+              </BigOverview>
+            </BigInfo>
           </BigMovie>
-        </>
+        ) : (
+          <>
+            <Overlay
+              onClick={goBackPage}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+            <BigMovie
+              bgphoto={getBgPath(
+                mediaDetailData ? mediaDetailData.backdrop_path + "" : ""
+              )}
+              layoutId={`${layoutIdPrefix}/${mediaId}`}
+            >
+              <BigX onClick={goBackPage}>X</BigX>
+              {mediaDetailData && (
+                <>
+                  <BigTitle>
+                    {mediaDetailData.title || mediaDetailData.name}
+                  </BigTitle>
+                  <BigPoster bgphoto={getBgPath(mediaDetailData.poster_path)} />
+                  <BigInfo>
+                    <BigHeader>
+                      <span>
+                        📅{" "}
+                        {mediaDetailData.release_date
+                          ? mediaDetailData.release_date.slice(0, 4)
+                          : mediaDetailData.first_air_date
+                          ? mediaDetailData.first_air_date.slice(0, 4)
+                          : ""}
+                      </span>
+                      <span>
+                        {mediaDetailData.runtime
+                          ? `${mediaDetailData.runtime}m`
+                          : mediaDetailData.number_of_seasons
+                          ? `${mediaDetailData.number_of_seasons} seasons`
+                          : ""}
+                      </span>
+                      <BigGenres>
+                        <span>🎭</span>
+                        {mediaDetailData.genres
+                          .slice(0, 2)
+                          .map((genre, index) => (
+                            <li key={index}>{genre.name}</li>
+                          ))}
+                      </BigGenres>
+                      <span>⭐️ {mediaDetailData.vote_average}</span>
+                    </BigHeader>
+                    <BigOverview>
+                      <BigTagline>
+                        {mediaDetailData.tagline
+                          ? "【 " + mediaDetailData.tagline + " 】"
+                          : null}
+                      </BigTagline>
+                      {mediaDetailData.overview}
+                    </BigOverview>
+                  </BigInfo>
+                </>
+              )}
+            </BigMovie>
+          </>
+        )}
       </AnimatePresence>
     </>
   );
