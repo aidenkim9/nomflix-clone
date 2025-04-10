@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/nomflix-clone/static/js/main.c00240e2.js",
+    "main.css": "/nomflix-clone/static/css/main.671d2fa5.css",
+    "main.js": "/nomflix-clone/static/js/main.479bfeab.js",
     "index.html": "/nomflix-clone/index.html",
-    "main.c00240e2.js.map": "/nomflix-clone/static/js/main.c00240e2.js.map"
+    "main.671d2fa5.css.map": "/nomflix-clone/static/css/main.671d2fa5.css.map",
+    "main.479bfeab.js.map": "/nomflix-clone/static/js/main.479bfeab.js.map"
   },
   "entrypoints": [
-    "static/js/main.c00240e2.js"
+    "static/css/main.671d2fa5.css",
+    "static/js/main.479bfeab.js"
   ]
 }
