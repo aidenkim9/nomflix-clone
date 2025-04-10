@@ -114,7 +114,7 @@ function Header() {
           scrollY.get() > 50 ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0)",
       });
     });
-  }, [navAnimation]);
+  }, [scrollY, navAnimation]);
 
   const onValid = (data: IForm) => {
     navigate(`/search/${data.type}?keyword=${data.keyword}`);
