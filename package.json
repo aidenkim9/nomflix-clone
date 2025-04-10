@@ -54,6 +54,5 @@
   },
   "devDependencies": {
     "@types/react-helmet": "^6.1.11"
-  },
-  "homepage": "https://aidenkim9.github.io/nomflix-clone"
+  }
 }
